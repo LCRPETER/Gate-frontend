@@ -1,0 +1,94 @@
+/*  Cours   */
+
+h1 {
+  color: #495057;
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+.cours-container {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 100%;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.cours-container h2 {
+  color: #495057;
+  margin-bottom: 15px;
+  font-size: 24px;
+}
+
+.cours-container form div {
+  margin-bottom: 20px;
+}
+
+.cours-container label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.cours-container input[type="text"],
+.cours-container input[type="date"],
+.cours-container input[type="time"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.cours-container input[type="text"]:focus,
+.cours-container input[type="date"]:focus,
+.cours-container input[type="time"]:focus {
+  border-color: #80bdff;
+  outline: none;
+}
+
+.cours-container button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cours-container button:hover {
+  background-color: #0056b3;
+}
+
+.cours-container ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.cours-container li {
+  background-color: #f8f9fa;
+  padding: 10px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

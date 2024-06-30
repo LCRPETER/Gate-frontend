@@ -1,0 +1,233 @@
+/*App.css*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.bg-teal {
+  background: #43766c;
+}
+
+.text-teal {
+  color: #43766c;
+}
+.bg-beige {
+  background: #e8dfca;
+}
+.bg-brown-beige {
+  color: #7d7c7c;
+}
+
+.bg-orange-peel,
+.hover-box-parent:hover {
+  background: #ff9800;
+}
+
+.bg-Very-light-orange {
+  background: #ffdd95;
+}
+
+.bg-dark-blue {
+  background: #222831;
+}
+
+.desaturated-dark-blue {
+  background: #d2d4ce;
+}
+.dark-moderate-red {
+  background: #76453b;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    "box-left box-right"
+    "box-left box-right-center";
+  grid-template-columns: 25% 75%;
+  grid-template-rows: auto auto;
+  gap: 1px;
+}
+
+.box-left {
+  grid-area: box-left;
+  height: 590px;
+}
+
+.box-right {
+  grid-area: box-right;
+  height: 80px;
+}
+
+.box-right-center {
+  grid-area: box-right-center;
+}
+
+.mini-box {
+  width: 200px;
+  height: 130px;
+}
+
+.hover-box:hover,
+.active {
+  background: #ff0404;
+  transition: all 0.3s ease;
+}
+
+.hover-box-student:hover,
+.hover-box-schedule:hover,
+.active-student {
+  background: #43766c;
+  transition: all 0.3s ease;
+}
+
+.hover-box-teacher:hover,
+.active-teacher {
+  background: #0a58ca;
+  transition: all 0.3s ease;
+}
+
+.icon-group {
+  display: grid;
+  grid-template-areas:
+    "icon1 icon2"
+    ". icon3";
+  grid-template-columns: 1fr 1fr;
+  justify-items: center; /* Center items horizontally */
+  align-items: center;
+  text-align: center;
+  width: 50px;
+  font-size: 10px;
+  margin-left: -13px;
+  margin-top: 2px;
+}
+
+.icon-group i:nth-child(1) {
+  grid-area: icon1;
+  margin-right: -10px;
+}
+
+.icon-group i:nth-child(2) {
+  grid-area: icon2;
+  margin-left: -10px;
+}
+
+.icon-group i:nth-child(3) {
+  grid-area: icon3;
+  margin-left: -26px;
+  margin-top: -4px;
+}
+
+.hover-effect {
+  position: relative;
+  outline: none;
+  border: none;
+}
+
+.hover-effect::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 4px;
+  background-color: #ffb800;
+  transition: width 0.3s ease;
+}
+
+.hover-effect:hover::before,
+.hover-effect:focus::before {
+  width: 100%;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: 30% 30% 30%;
+  gap: 1px;
+}
+
+/*image form*/
+
+.image-form-profil {
+  width: 120px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.image-form img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hover-box-schedule {
+  transition: all 0.3s ease;
+  border-radius: 8px;
+}
+
+.hover-box-schedule:hover {
+  background: #43766c;
+  transition: all 0.3s ease;
+}
+
+.hover-box-schedule .card-title,
+.hover-box-schedule .card-subtitle,
+.hover-box-schedule .card-text {
+  color: #43766c;
+}
+
+.hover-box-schedule:hover .card-title,
+.hover-box-schedule:hover .card-subtitle,
+.hover-box-schedule:hover .card-text {
+  color: #fff;
+}
+.emploi-du-temps {
+  padding: 20px;
+}
+
+.controls-schedule button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.grid-container-schedule {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1px;
+  background-color: #ddd;
+}
+
+.grid-header-schedule {
+  display: contents;
+}
+
+.grid-header-cell-schedule {
+  background-color: #f8f9fa;
+  text-align: center;
+  font-weight: bold;
+}
+
+.grid-row-schedule {
+  display: contents;
+}
+
+.grid-cell-schedule {
+  background-color: white;
+  padding: 10px;
+  text-align: center;
+}
+
+.time-cell-schedule {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
