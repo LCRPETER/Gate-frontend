@@ -12,19 +12,20 @@ export default function StudentAssiduite() {
   ];
 
   return (
-    <div style={{ marginTop: "30px" }}>
+    <div style={{ marginTop: "-30px" }}>
+      <h1 className=" m-auto text-center mb-4 text-teal">Liste d'absence</h1>
       <table className="table border border-1 border-secondary w-100 border-start-0 border-end-0">
         <thead>
           <tr className="border-1 border-start-0 border-end-0">
             <th
               scope="col "
-              className="border-1 border-start-0 border-end-0 fw-bolder"
+              className="border border-start-0 border-end-0 fw-bolder"
             >
               Date
             </th>
             <th
               scope="col"
-              className="border-1 border-start-0 border-end-0 fw-bolder"
+              className="border border-start-0 border-end-0 fw-bolder"
             >
               Matière
             </th>

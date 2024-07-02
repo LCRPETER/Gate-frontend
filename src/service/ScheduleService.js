@@ -11,6 +11,15 @@ const getGroupScheduleById = (groupId, scheduleId) => {
   );
 };
 
+const getGroupScheduleByDate = (groupId, startDate, endDate) => {
+  return axios.get(
+    `${API_BASE_URL}/groups/${groupId}/schedules/by-date?startDate=${startDate}&endDate=${endDate}`,
+    {
+      headers: { Authorization: localStorage.getItem("token") },
+    }
+  );
+};
+
 const getGroupSchedules = (groupId) => {
   return axios.get(`${API_BASE_URL}/group-schedules/${groupId}`, {
     headers: { Authorization: localStorage.getItem("token") },
@@ -20,4 +29,5 @@ const getGroupSchedules = (groupId) => {
 export default {
   getGroupScheduleById,
   getGroupSchedules,
+  getGroupScheduleByDate,
 };

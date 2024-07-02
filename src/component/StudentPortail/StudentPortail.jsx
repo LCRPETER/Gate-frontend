@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import DashboardStudent from "../StudentPortail/DashboardStudent";
 import Logout from "../Logout/Logout";
 import StudentGrades from "./StudentGrades";
+import StudentAssiduite from "./StudentAssiduite";
+import StudentAssessment from "./StudentAssessment";
 
 const StudentPortail = () => {
   const [currentView, setCurrentView] = useState("dashboard");
@@ -37,7 +39,7 @@ const StudentPortail = () => {
       case "grades":
         return <StudentGrades />;
       case "schedules":
-        return <div></div>;
+        return <StudentAssessment />;
       case "absences":
         return <div></div>;
       case "payments":
@@ -45,7 +47,7 @@ const StudentPortail = () => {
       case "evaluations":
         return <div></div>;
       case "absenceHistory":
-        return <div></div>;
+        return <StudentAssiduite />;
       case "paymentHistory":
         return <div></div>;
       case "logout":
@@ -69,12 +71,12 @@ const StudentPortail = () => {
         >
           <div className="d-flex align-items-center justify-content-center">
             <div className="image-form-profil">
-              <img src="../../../public/asset/images/piere.png" alt="Avatar" />
+              <img src="../../../public/asset/images/eder.png" alt="Avatar" />
             </div>
           </div>
 
           <div className="d-flex align-items-center text-light justify-content-center fw-semibold">
-            LCR PETER
+            EDER IASSINKE
           </div>
           <span
             className="position-absolute shadow-sm"

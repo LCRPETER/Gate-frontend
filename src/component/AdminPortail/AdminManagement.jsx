@@ -74,7 +74,7 @@ const AdminManagement = () => {
           </div>
 
           <div className="d-flex align-items-center text-light justify-content-center fw-semibold">
-            LCR PETER
+            Admin
           </div>
           <span
             className="position-absolute shadow-sm"

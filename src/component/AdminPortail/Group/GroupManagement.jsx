@@ -30,7 +30,7 @@ const GroupManagement = () => {
     <>
       <div className="d-flex align-items-center justify-content-end m-auto position-relative w-50 me-5">
         <button
-          className="bg-teal text-light fw-semibold rounded-4 p-1"
+          className="bg-teal text-light fw-semibold rounded-2 p-1"
           style={{ marginRight: "30px", width: "120px" }}
           onClick={() => handleViewChange("add-group")}
         >

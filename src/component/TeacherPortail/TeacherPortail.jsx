@@ -62,12 +62,12 @@ const TeacherPortail = () => {
         >
           <div className="d-flex align-items-center justify-content-center">
             <div className="image-form-profil">
-              <img src="../../../public/asset/images/piere.png" alt="Avatar" />
+              <img src="../../../public/asset/images/moise.jpg" alt="Avatar" />
             </div>
           </div>
 
           <div className="d-flex align-items-center text-light justify-content-center fw-semibold">
-            LCR PETER
+            Moise Lokoua
           </div>
           <span
             className="position-absolute shadow-sm"

@@ -9,11 +9,10 @@ const StudentGrades = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Fonction asynchrone pour récupérer les notes d'un étudiant
     const fetchStudentGrades = async () => {
       try {
         const response = await getStudentGrades(studentId);
-        setGrades(response.data.grades); // Supposant que votre backend renvoie un objet avec un tableau de grades sous la clé "grades"
+        setGrades(response.data.grades); 
         setLoading(false);
       } catch (error) {
         console.error("Erreur lors de la récupération des notes :", error);
