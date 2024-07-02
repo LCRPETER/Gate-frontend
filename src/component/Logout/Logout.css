@@ -1,0 +1,54 @@
+.logout-modal {
+  position: absolute;
+  top: 10px; /* Ajustez la position verticale selon vos besoins */
+  right: 10px; /* Ajustez la position horizontale selon vos besoins */
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000; /* Assurez-vous que le modal est au-dessus de tout le reste */
+}
+
+.logout-modal-content {
+  max-width: 300px; /* Ajustez la largeur maximale du contenu */
+}
+
+.logout-modal h2 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+}
+
+.logout-modal p {
+  font-size: 1rem;
+  margin-bottom: 20px;
+}
+
+.logout-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logout-buttons button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.logout-buttons button:first-child {
+  background-color: #43766c; /* Couleur de fond pour le bouton Déconnexion */
+  color: #fff;
+  border: none;
+}
+
+.logout-buttons button:first-child:hover {
+  background-color: #43766c;
+}
+
+.logout-buttons button:last-child {
+  background-color: #6c757d; /* Couleur de fond pour le bouton Annuler */
+  color: #fff;
+  border: none;
+}
+
+.logout-buttons button:last-child:hover {
+  background-color: #5a6268;
+}

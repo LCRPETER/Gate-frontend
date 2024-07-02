@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "tw-elements";
-import SubjectService from "../../../service/SubjectService";
+import { getAllSubjects } from "../../../service/SubjectService";
 import DeleteSubjectModal from "./DeleteSubjectModal";
 
 const SubjectList = () => {
@@ -13,7 +13,7 @@ const SubjectList = () => {
   const subjectsPerPage = 3;
 
   useEffect(() => {
-    SubjectService.getAllSubjects()
+    getAllSubjects()
       .then((response) => {
         setSubjects(response.data);
       })

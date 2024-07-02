@@ -2,25 +2,21 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8080/api/admin";
 
-const axiosInstance = axios.create({
-  baseURL: API_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
-  },
-});
-
 const getAllCourses = () => {
-  return axiosInstance.get("/courses");
+  return axios.get(`${API_URL}/courses`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
 const deleteCoursesById = (id) => {
   console.log("Deleting Group ID: ", id);
-  return axiosInstance.delete(`/courses/delete/${id}`);
+  return axios.delete(`${API_URL}/courses/delete/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
 const createCourse = async (courseData) => {
-  const response = await axiosInstance.post("/", courseData);
+  const response = await axios.post(API_URL, courseData);
   return response.data;
 };
 

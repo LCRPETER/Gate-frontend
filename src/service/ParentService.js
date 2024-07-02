@@ -1,63 +1,76 @@
 // src/services/UserService.js
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/admin";
+const API_URL = "http://localhost:8080/api/admin/parents";
 
-const postParents = () => {
-  return axios.post(`${API_URL}/parents`);
+export const postParents = (parent) => {
+  return axios.post(API_URL, parent, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
-const addStudentToParent = () => {
-  return axios.post(`${API_URL}/parents/${parentId}/students/${studentId}`);
+export const uploadPhoto = (id, file) => {
+  let formData = new FormData();
+  formData.append("file", file);
+
+  return axios.post(`${API_URL}/uploadPhoto/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: localStorage.getItem("token"),
+    },
+  });
 };
 
-const getAllParents = () => {
-  return axios.get(`${API_URL}/parents`);
+export const addStudentToParent = () => {
+  return axios.post(`${API_URL}/${parentId}/students/${studentId}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
-const getParentById = (id) => {
-  return axios.get(`${API_URL}/parents/${id}`);
+export const getAllParents = () => {
+  return axios.get(API_URL, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
-const updateParent = (id) => {
-  return axios.put(`${API_URL}/parents/${id}`);
+export const getParentById = (id) => {
+  return axios.get(`${API_URL}/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
-const searchParentsByFirstNameAndLastName = (firstName, lastName) => {
-  return axios.get(`${API_URL}/parents/searchByFirstNameAndLastName`, {
+export const updateParent = (id) => {
+  return axios.put(`${API_URL}/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+};
+
+export const searchParentsByFirstNameAndLastName = (firstName, lastName) => {
+  return axios.get(`${API_URL}/searchByFirstNameAndLastName`, {
     params: { firstName, lastName },
   });
 };
 
-const searchParentsByFirstNameOrLastName = (firstName, lastName) => {
-  return axios.get(`${API_URL}/parents/searchByFirstNameOrLastName`, {
+export const searchParentsByFirstNameOrLastName = (firstName, lastName) => {
+  return axios.get(`${API_URL}/searchByFirstNameOrLastName`, {
     params: { firstName, lastName },
   });
 };
 
-const getStudentsByParentId = (parentId) => {
-  return axios.get(`${API_URL}/parents/${parentId}/students`);
-};
-
-const deleteParentById = (id) => {
-  return axios.delete(`${API_URL}/parents/delete/${id}`);
-};
-
-const deleteParentsByFirstNameAndLastName = (firstName, lastName) => {
-  return axios.delete(`${API_URL}/parents/deleteByFirstNameAndLastName`, {
-    params: { firstName, lastName },
+export const getStudentsByParentId = (parentId) => {
+  return axios.get(`${API_URL}/${parentId}/students`, {
+    headers: { Authorization: localStorage.getItem("token") },
   });
 };
 
-export default {
-  postParents,
-  addStudentToParent,
-  getAllParents,
-  getParentById,
-  updateParent,
-  searchParentsByFirstNameAndLastName,
-  searchParentsByFirstNameOrLastName,
-  getStudentsByParentId,
-  deleteParentById,
-  deleteParentsByFirstNameAndLastName,
+export const deleteParentById = (id) => {
+  return axios.delete(`${API_URL}/delete/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+};
+
+export const deleteParentsByFirstNameAndLastName = (firstName, lastName) => {
+  return axios.delete(`${API_URL}/deleteByFirstNameAndLastName`, {
+    params: { firstName, lastName },
+  });
 };

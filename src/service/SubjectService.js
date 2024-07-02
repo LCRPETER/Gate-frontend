@@ -1,16 +1,21 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/admin";
+const API_URL = "http://localhost:8080/api/admin/subjects";
 
-const getAllSubjects = () => {
-  return axios.get(`${API_URL}/subjects`);
+export const getAllSubjects = () => {
+  return axios.get(API_URL, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
-const deleteSubjectById = (id) => {
-  return axios.delete(`${API_URL}/subjects/delete/${id}`);
+export const createSubject = (subject) => {
+  return axios.post(API_URL, subject, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
-export default {
-  getAllSubjects,
-  deleteSubjectById,
+export const deleteSubjectById = (id) => {
+  return axios.delete(`${API_URL}/delete/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };

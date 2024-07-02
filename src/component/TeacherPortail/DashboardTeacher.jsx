@@ -28,87 +28,87 @@ const DashboardTeacher = ({ handleViewChange, currentView }) => {
               height: "70vh",
             }}
           >
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
               <div
-                className={`h-25 bg-teal rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                className={`h-25 bg-dark-blue rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
                   "schedules"
                 )}`}
               >
                 Emploi du Temps
               </div>
-              <div className="bg-beige h-75 d-flex align-items-center justify-content-center">
+              <div className="desaturated-dark-blue h-75 d-flex align-items-center justify-content-center">
                 <Link to="#" onClick={() => handleViewChange("schedules")}>
                   <i
                     className="fa-solid fa-calendar-days fs-1 bg-brown-beige"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", color: "black" }}
                   ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
               <div
-                className={`h-25 bg-teal rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                className={`h-25 bg-dark-blue rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
                   "courses"
                 )}`}
               >
                 Cours
               </div>
-              <div className="bg-beige h-75 d-flex align-items-center justify-content-center">
+              <div className="desaturated-dark-blue h-75 d-flex align-items-center justify-content-center">
                 <Link to="#" onClick={() => handleViewChange("courses")}>
                   <i
                     className="fa-solid fa-chalkboard fs-1 bg-brown-beige"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", color: "black" }}
                   ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
               <div
-                className={`h-25 bg-teal rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                className={`h-25 bg-dark-blue rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
                   "evaluations"
                 )}`}
               >
                 Évaluations
               </div>
-              <div className="bg-beige h-75 d-flex align-items-center justify-content-center">
+              <div className="desaturated-dark-blue h-75 d-flex align-items-center justify-content-center">
                 <Link to="#" onClick={() => handleViewChange("evaluations")}>
                   <i
                     className="fa-solid fa-file-alt fs-1 bg-brown-beige"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", color: "black" }}
                   ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
               <div
-                className={`h-25 bg-teal rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                className={`h-25 bg-dark-blue rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
                   "grades"
                 )}`}
               >
                 Notes
               </div>
-              <div className="bg-beige h-75 d-flex align-items-center justify-content-center">
+              <div className="desaturated-dark-blue h-75 d-flex align-items-center justify-content-center">
                 <Link to="#" onClick={() => handleViewChange("grades")}>
                   <i
                     className="fa-solid fa-graduation-cap fs-1 bg-brown-beige"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", color: "black" }}
                   ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
               <div
-                className={`h-25 bg-teal rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                className={`h-25 bg-dark-blue rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
                   "attendance"
                 )}`}
               >
                 Présences
               </div>
-              <div className="bg-beige h-75 d-flex align-items-center justify-content-center">
+              <div className="desaturated-dark-blue h-75 d-flex align-items-center justify-content-center">
                 <Link to="#" onClick={() => handleViewChange("attendance")}>
                   <i
                     className="fa-solid fa-user-check fs-1 bg-brown-beige"
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: "pointer", color: "black" }}
                   ></i>
                 </Link>
               </div>

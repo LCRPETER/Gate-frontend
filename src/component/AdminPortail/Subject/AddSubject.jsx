@@ -5,17 +5,18 @@ import { getAllGroupes } from "../../../service/GroupsService";
 const AddSubject = ({ handleViewChange }) => {
   const [nameSubject, setNameSubject] = useState("");
   const [description, setDescription] = useState("");
-  const [headTeacher, setHeadTeacher] = useState("");
-  const [groups, setGroups] = useState([]);
+  const [headTeacher, setHeadTeacher] = useState();
+  const [allGroups, setAllGroups] = useState([]);
   const [grades, setGrades] = useState([]);
   const [course, setCourse] = useState([]);
+  const [selectedGroups, setSelectedGroups] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     getAllGroupes()
       .then((response) => {
-        setGroups(response.data);
+        setAllGroups(response.data);
       })
       .catch((error) => {
         console.error("Erreur lors de la récupération des groupes", error);
@@ -36,8 +37,8 @@ const AddSubject = ({ handleViewChange }) => {
   const handleGroupChange = (e) => {
     const { value } = e.target;
     const group = allGroups.find((g) => g.group_id === parseInt(value));
-    if (group && !groups.find((g) => g.group_id === group.group_id)) {
-      setGroups([...groups, group]);
+    if (group && !selectedGroups.find((g) => g.group_id === group.group_id)) {
+      setSelectedGroups([...selectedGroups, group]);
     }
   };
 
@@ -47,9 +48,10 @@ const AddSubject = ({ handleViewChange }) => {
       nameSubject,
       description,
       headTeacher,
-      groups,
-      grades,
-      course,
+      groups: selectedGroups,
+      assessments: [],
+      notes: [],
+      course: [],
     };
 
     createSubject(subject)
@@ -133,7 +135,7 @@ const AddSubject = ({ handleViewChange }) => {
                       placeholder="Professeur principal"
                       name="headTeacher"
                       value={headTeacher}
-                      onChange={handleInputChange}
+                      readOnly
                       className="form-control"
                     />
                   </div>
@@ -154,13 +156,24 @@ const AddSubject = ({ handleViewChange }) => {
                 </div>
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
-                    <ul>
-                      {groups.map((group) => (
-                        <li key={group.group_id}>
-                          {group.nameGroup} - {group.level}
-                        </li>
-                      ))}
-                    </ul>
+                    <input
+                      type="text"
+                      placeholder="Liste des notes"
+                      name="grades"
+                      value={grades.join(", ")}
+                      readOnly
+                      className="form-control"
+                    />
+                  </div>
+                  <div className="col form-group mb-2 fs-6">
+                    <input
+                      type="text"
+                      placeholder="Liste cours"
+                      name="course"
+                      value={course.join(", ")}
+                      readOnly
+                      className="form-control"
+                    />
                   </div>
                 </div>
                 <div className="row">

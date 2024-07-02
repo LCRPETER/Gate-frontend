@@ -1,37 +1,62 @@
 import React, { useState } from "react";
-import DashboardStudent from "./DashboardStudent";
-import StudentNotes from "./StudentNotes";
-import StudentDetail from "../AdminPortail/Students/StudentDetail";
-import StudentAssiduite from "./StudentAssiduite";
-import StudentAssessment from "./StudentAssessment";
+import DashboardStudent from "../StudentPortail/DashboardStudent";
+import Logout from "../Logout/Logout";
+import StudentGrades from "./StudentGrades";
 
 const StudentPortail = () => {
   const [currentView, setCurrentView] = useState("dashboard");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleViewChange = (view) => {
     setCurrentView(view);
   };
 
+  const isActive = (view) => {
+    return currentView === view ? "active" : "";
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
+  };
+
   const renderView = () => {
     switch (currentView) {
       case "dashboard":
-        return <DashboardStudent />;
-      case "personal-info":
-        return <StudentDetail />;
-      case "schedules":
-        return <div>Consulter emploi du temps</div>;
+        return (
+          <DashboardStudent
+            handleViewChange={handleViewChange}
+            currentView={currentView}
+          />
+        );
+      case "personalInfo":
+        return <div></div>;
       case "grades":
-        return <StudentNotes />;
-      case "assiduite":
-        return <StudentAssiduite />;
-      case "assessment":
-        return <StudentAssessment />;
+        return <StudentGrades />;
+      case "schedules":
+        return <div></div>;
+      case "absences":
+        return <div></div>;
       case "payments":
-        return <div>Consulter l’historique des paiements</div>;
-      case "settings":
-        return <div>Paramètre</div>;
+        return <div></div>;
+      case "evaluations":
+        return <div></div>;
+      case "absenceHistory":
+        return <div></div>;
+      case "paymentHistory":
+        return <div></div>;
+      case "logout":
+        return <Logout />;
       default:
-        return <DashboardStudent />;
+        return (
+          <DashboardStudent
+            handleViewChange={handleViewChange}
+            currentView={currentView}
+          />
+        );
     }
   };
 
@@ -44,11 +69,12 @@ const StudentPortail = () => {
         >
           <div className="d-flex align-items-center justify-content-center">
             <div className="image-form-profil">
-              <img src="../../../public/asset/images/vso.jpg" alt="Avatar" />
+              <img src="../../../public/asset/images/piere.png" alt="Avatar" />
             </div>
           </div>
+
           <div className="d-flex align-items-center text-light justify-content-center fw-semibold">
-            Vinscia Okiemba
+            LCR PETER
           </div>
           <span
             className="position-absolute shadow-sm"
@@ -69,9 +95,9 @@ const StudentPortail = () => {
             onClick={() => handleViewChange("dashboard")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box-student m-auto ${
-                currentView === "dashboard" ? "active-student" : ""
-              }`}
+              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
+                "dashboard"
+              )}`}
               style={{ cursor: "pointer" }}
             >
               <i className="fa-solid fa-house fs-6"></i> Tableau de bord
@@ -91,17 +117,16 @@ const StudentPortail = () => {
           <div
             className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("personal-info")}
+            onClick={() => handleViewChange("personalInfo")}
           >
-            <div
-              className={`w-100 p-1 rounded-1 hover-box-student m-auto ${
-                currentView === "personal-info" ? "active-student" : ""
-              }`}
+            <p
+              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
+                "personalInfo"
+              )}`}
               style={{ cursor: "pointer" }}
             >
-              <i className="fa-solid fa-id-card fs-6"></i> Information
-              personnelle
-            </div>
+              <i className="fa-solid fa-user fs-6"></i> Information Personnelle
+            </p>
             <span
               className="position-absolute shadow-sm"
               style={{
@@ -115,17 +140,17 @@ const StudentPortail = () => {
             ></span>
           </div>
           <div
-            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
+            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("schedules")}
+            onClick={() => handleViewChange("schedule")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box-student m-auto ${
-                currentView === "schedules" ? "active-student" : ""
-              }`}
+              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+                "schedule"
+              )}`}
               style={{ cursor: "pointer" }}
             >
-              <i className="fa-solid fa-calendar-days fs-5"></i> Emplois du
+              <i className="fa-solid fa-calendar-days fs-5 me-1"></i> Emploi du
               temps
             </div>
             <span
@@ -141,18 +166,23 @@ const StudentPortail = () => {
             ></span>
           </div>
           <div
-            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
+            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
             onClick={() => handleViewChange("grades")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box-student d-flex align-items-center m-auto ${
-                currentView === "grades" ? "active-student" : ""
-              }`}
+              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+                "grades"
+              )}`}
               style={{ cursor: "pointer" }}
             >
-              <div className="me-1">
-                <i class="fa-regular fa-clipboard fs-5"></i>
+              <div className="h-25 d-flex align-items-center me-1">
+                <div>
+                  <i className="fa-solid fa-book fs-6"></i>
+                </div>
+                <div style={{ marginTop: "-5px", marginLeft: "-3px" }}>
+                  <i className="fa-solid fa-book fs-6"></i>
+                </div>
               </div>
               <div>Notes</div>
             </div>
@@ -168,22 +198,18 @@ const StudentPortail = () => {
               }}
             ></span>
           </div>
-
           <div
-            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
+            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("assessment")}
+            onClick={() => handleViewChange("evaluations")}
           >
             <div
-              className={`w-100 p-1 rounded-1 d-flex align-items-center hover-box-student m-auto ${
-                currentView === "assessment" ? "active-student" : ""
-              }`}
+              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+                "evaluations"
+              )}`}
               style={{ cursor: "pointer" }}
             >
-              <div>
-                <i className="fa-solid fa-chart-line fs-5 me-1"></i>
-              </div>
-              <div>Evaluation</div>
+              <i className="fa-solid fa-clipboard-check fs-5"></i> Evaluations
             </div>
             <span
               className="position-absolute shadow-sm"
@@ -198,20 +224,18 @@ const StudentPortail = () => {
             ></span>
           </div>
           <div
-            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
+            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("assiduite")}
+            onClick={() => handleViewChange("absenceHistory")}
           >
             <div
-              className={`w-100 p-1 rounded-1 d-flex align-items-center hover-box-student m-auto ${
-                currentView === "assiduite" ? "active-student" : ""
-              }`}
+              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+                "absenceHistory"
+              )}`}
               style={{ cursor: "pointer" }}
             >
-              <div>
-                <i class="fa-solid fa-user-clock fs-5 me-1"></i>
-              </div>
-              <div>Assiduité</div>
+              <i className="fa-solid fa-calendar-times fs-5"></i> Historique des
+              Absences
             </div>
             <span
               className="position-absolute shadow-sm"
@@ -226,14 +250,14 @@ const StudentPortail = () => {
             ></span>
           </div>
           <div
-            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
+            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("payments")}
+            onClick={() => handleViewChange("paymentHistory")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box-student m-auto ${
-                currentView === "payments" ? "active-student" : ""
-              }`}
+              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
+                "paymentHistory"
+              )}`}
               style={{ cursor: "pointer" }}
             >
               <i className="fa-solid fa-money-check-dollar fs-5"></i> Paiements
@@ -255,14 +279,14 @@ const StudentPortail = () => {
             style={{ height: "45px" }}
             onClick={() => handleViewChange("settings")}
           >
-            <p
-              className={`w-100 p-1 rounded-1 hover-box-student m-auto ${
-                currentView === "settings" ? "active-student" : ""
-              }`}
+            <div
+              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
+                "settings"
+              )}`}
               style={{ cursor: "pointer" }}
             >
               <i className="fa-solid fa-gear fs-5"></i> Paramètre
-            </p>
+            </div>
           </div>
         </div>
       </div>
@@ -270,10 +294,12 @@ const StudentPortail = () => {
         <div className="fs-2 fw-semibold">Bienvenue dans votre Portail</div>
         <div className="p-2 fw-semibold">
           <div className="" style={{ cursor: "pointer" }}>
-            <div className="text-center" style={{ color: "#ff9800" }}>
-              <i className="fa-solid fa-user fs-5"></i>{" "}
+            <div className="text-center ">
+              <i
+                className="fa-solid fa-arrow-right-from-bracket fs-4 text-teal"
+                onClick={handleLogoutClick}
+              ></i>
             </div>
-            <div className="fs-6 fw-semibold">Profil</div>
           </div>
         </div>
         <span
@@ -287,120 +313,10 @@ const StudentPortail = () => {
           }}
         ></span>
       </div>
-      <div className="box-right-center pe-3 ps-3 rounded-0">{renderView()}</div>
+      <div className="box-right-center rounded-0">{renderView()}</div>
+      {showLogoutModal && <Logout onClose={closeLogoutModal} />}
     </div>
   );
 };
 
 export default StudentPortail;
-
-//         <div
-//           className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
-//           style={{ height: "45px" }}
-//           onClick={() => handleViewChange("grades")}
-//         >
-//           <div
-//             className="w-100 p-1 rounded-1 hover-box-student m-auto"
-//             style={{ cursor: "pointer" }}
-//           >
-//             <i className="fa-solid fa-chart-line fs-5"></i> Consulter notes et
-//             évaluations
-//           </div>
-//           <span
-//             className="position-absolute shadow-sm"
-//             style={{
-//               width: "100%",
-//               height: "1px",
-//               left: "50%",
-//               top: "100%",
-//               transform: "translate(-50%)",
-//               backgroundColor: "rgba(148, 147, 147, 0.568)",
-//             }}
-//           ></span>
-//         </div>
-//         <div
-//           className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
-//           style={{ height: "45px" }}
-//           onClick={() => handleViewChange("absences")}
-//         >
-//           <div
-//             className="w-100 p-1 rounded-1 hover-box-student m-auto"
-//             style={{ cursor: "pointer" }}
-//           >
-//             <i className="fa-solid fa-user-clock fs-5"></i> Historique des
-//             absences
-//           </div>
-//           <span
-//             className="position-absolute shadow-sm"
-//             style={{
-//               width: "100%",
-//               height: "1px",
-//               left: "50%",
-//               top: "100%",
-//               transform: "translate(-50%)",
-//               backgroundColor: "rgba(148, 147, 147, 0.568)",
-//             }}
-//           ></span>
-//         </div>
-//         <div
-//           className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center"
-//           style={{ height: "45px" }}
-//           onClick={() => handleViewChange("payments")}
-//         >
-//           <div
-//             className="w-100 p-1 rounded-1 hover-box-student m-auto"
-//             style={{ cursor: "pointer" }}
-//           >
-//             <i className="fa-solid fa-money-check-dollar fs-5"></i> Historique
-//             des paiements
-//           </div>
-//           <span
-//             className="position-absolute shadow-sm"
-//             style={{
-//               width: "100%",
-//               height: "1px",
-//               left: "50%",
-//               top: "100%",
-//               transform: "translate(-50%)",
-//               backgroundColor: "rgba(148, 147, 147, 0.568)",
-//             }}
-//           ></span>
-//         </div>
-//         <div
-//           className="mb-2 text-light ps-3 pe-4 d-flex align-items-center "
-//           style={{ height: "45px" }}
-//           onClick={() => handleViewChange("settings")}
-//         >
-//           <p
-//             className="w-100 p-1 rounded-1 hover-box-student m-auto"
-//             style={{ cursor: "pointer" }}
-//           >
-//             <i className="fa-solid fa-gear fs-5"></i> Paramètre
-//           </p>
-//         </div>
-//       </div>
-//     </div>
-//     <div className="box-right p-3 position-relative rounded-0 d-flex align-items-center justify-content-between">
-//       <div className="fs-2 fw-semibold">Bienvenue dans votre Portail</div>
-//       <div className="p-2 fw-semibold">
-//         <div className="" style={{ cursor: "pointer" }}>
-//           <div className="text-center" style={{ color: "#ff9800" }}>
-//             <i className="fa-solid fa-user fs-5"></i>{" "}
-//           </div>
-//           <div className="fs-6 fw-semibold">Profil</div>
-//         </div>
-//       </div>
-//       <span
-//         className="position-absolute bg-secondary shadow-sm"
-//         style={{
-//           width: "96%",
-//           height: "3.5px",
-//           left: "50%",
-//           top: "100%",
-//           transform: "translate(-50%)",
-//         }}
-//       ></span>
-//     </div>
-//     <div className="box-right-center rounded-0">{renderView()}</div>
-//   </div>
-// );

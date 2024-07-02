@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import DashboardTeacher from "./DashboardTeacher";
+import Logout from "../Logout/Logout";
 
 const TeacherPortail = () => {
   const [currentView, setCurrentView] = useState("dashboard");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleViewChange = (view) => {
     setCurrentView(view);
@@ -10,6 +12,14 @@ const TeacherPortail = () => {
 
   const isActive = (view) => {
     return currentView === view ? "active" : "";
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
   };
 
   const renderView = () => {
@@ -31,6 +41,8 @@ const TeacherPortail = () => {
         return <div>grades</div>;
       case "attendance":
         return <div>attendance</div>;
+      case "logout":
+        return <Logout />;
       default:
         return (
           <DashboardTeacher
@@ -43,7 +55,7 @@ const TeacherPortail = () => {
 
   return (
     <div className="grid-container" style={{ width: "100%", height: "100vh" }}>
-      <div className="box-left bg-teal rounded-0 shadow rounded">
+      <div className="box-left bg-dark-blue rounded-0 shadow rounded">
         <div
           className="w-100 m-auto p-2 position-relative"
           style={{ height: "170px" }}
@@ -76,7 +88,7 @@ const TeacherPortail = () => {
             onClick={() => handleViewChange("dashboard")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
+              className={`w-100 p-1 rounded-1 hover-box-teacher m-auto ${isActive(
                 "dashboard"
               )}`}
               style={{ cursor: "pointer" }}
@@ -101,12 +113,12 @@ const TeacherPortail = () => {
             onClick={() => handleViewChange("schedules")}
           >
             <p
-              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
+              className={`w-100 p-1 rounded-1 hover-box-teacher m-auto ${isActive(
                 "schedules"
               )}`}
               style={{ cursor: "pointer" }}
             >
-              <i className="fa-solid fa-calendar-days fs-5 p-1"></i>
+              <i className="fa-solid fa-calendar-days fs-6 me-1"></i>
               Emploi du temps
             </p>
             <span
@@ -127,13 +139,13 @@ const TeacherPortail = () => {
             onClick={() => handleViewChange("courses")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+              className={`w-100 p-1 rounded-1 hover-box-teacher d-flex align-items-center m-auto ${isActive(
                 "courses"
               )}`}
               style={{ cursor: "pointer" }}
             >
-              <i className="fa-solid fa-chalkboard fs-5"></i>
-              <div className="m-1">Cours</div>
+              <i className="fa-solid fa-chalkboard fs-5 me-1"></i>
+              Cours
             </div>
             <span
               className="position-absolute shadow-sm"
@@ -153,12 +165,12 @@ const TeacherPortail = () => {
             onClick={() => handleViewChange("evaluations")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+              className={`w-100 p-1 rounded-1 hover-box-teacher d-flex align-items-center m-auto ${isActive(
                 "evaluations"
               )}`}
               style={{ cursor: "pointer" }}
             >
-              <i className="fa-solid fa-file-alt fs-5"></i>
+              <i className="fa-solid fa-file-alt fs-6"></i>
               <span style={{ marginLeft: "7px" }}>Evaluations</span>
             </div>
             <span
@@ -179,13 +191,13 @@ const TeacherPortail = () => {
             onClick={() => handleViewChange("grades")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+              className={`w-100 p-1 rounded-1 hover-box-teacher d-flex align-items-center m-auto ${isActive(
                 "grades"
               )}`}
               style={{ cursor: "pointer" }}
             >
-              <i className="fa-solid fa-graduation-cap fs-6"></i>
-              <span style={{ marginLeft: "7px" }}>Notes</span>
+              <i className="fa-solid fa-graduation-cap fs-6 me-1"></i>
+              Notes
             </div>
             <span
               className="position-absolute shadow-sm"
@@ -205,7 +217,7 @@ const TeacherPortail = () => {
             onClick={() => handleViewChange("attendance")}
           >
             <div
-              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
+              className={`w-100 p-1 rounded-1 hover-box-teacher d-flex align-items-center m-auto ${isActive(
                 "attendance"
               )}`}
               style={{ cursor: "pointer" }}
@@ -231,10 +243,12 @@ const TeacherPortail = () => {
         <div className="fs-2 fw-semibold">Bienvenue dans votre Portail</div>
         <div className="p-2 fw-semibold">
           <div className="" style={{ cursor: "pointer" }}>
-            <div className="text-center">
-              <i className="fa-solid fa-user fs-5 bg-brown-beige"></i>{" "}
+            <div className="text-center ">
+              <i
+                className="fa-solid fa-arrow-right-from-bracket fs-4 text-teal"
+                onClick={handleLogoutClick}
+              ></i>
             </div>
-            <div className="fs-6 fw-semibold">Profil</div>
           </div>
         </div>
         <span
@@ -249,6 +263,7 @@ const TeacherPortail = () => {
         ></span>
       </div>
       <div className="box-right-center rounded-0">{renderView()}</div>
+      {showLogoutModal && <Logout onClose={closeLogoutModal} />}
     </div>
   );
 };

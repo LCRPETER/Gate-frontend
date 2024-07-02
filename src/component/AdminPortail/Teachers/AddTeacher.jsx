@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { createStudent, uploadPhoto } from "../../../service/StudentService";
-import { getAllGroupes } from "../../../service/GroupsService";
+import { createTeacher, uploadPhoto } from "../../../service/TeacherService";
+import { getAllSubjects } from "../../../service/SubjectService";
 
-const AddStudent = ({ handleViewChange }) => {
+const AddTeacher = ({ handleViewChange }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -11,29 +11,25 @@ const AddStudent = ({ handleViewChange }) => {
     birthPlace: "",
     address: { city: "", street: "", zipCod: "" },
     infoContacts: { email: "", phoneNumber: "" },
-    role: { name: "STUDENT" },
+    role: { name: "TEACHER" },
     password: "",
     photo: null,
-    parent: null,
-    groups: { group_id: "", nameGroup: "", level: "" },
-    grades: [],
-    payments: [],
-    attendance: [],
+    taughtSubjects: [],
   });
 
   const [photo, setPhoto] = useState(null);
-  const [groups, setGroups] = useState([]);
+  const [taughtSubjects, setTaughtSubjects] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getAllGroupes()
+    getAllSubjects()
       .then((response) => {
-        setGroups(response.data);
+        setTaughtSubjects(response.data);
       })
       .catch((error) => {
-        console.error("Erreur lors de la récupération des groupes", error);
+        console.error("Erreur lors de la récupération des matières", error);
       });
   }, []);
 
@@ -67,30 +63,30 @@ const AddStudent = ({ handleViewChange }) => {
     }));
   };
 
-  const handleGroupsChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      groups: {
-        ...prevState.groups,
-        [name]: value,
-      },
-    }));
+  const handleSubjectChange = (e) => {
+    const { value } = e.target;
+    const subject = taughtSubjects.find((subj) => subj.subject_id === value);
+    if (subject) {
+      setFormData((prevState) => ({
+        ...prevState,
+        taughtSubjects: [...prevState.taughtSubjects, subject],
+      }));
+    }
   };
 
   const handlePhotoChange = (e) => {
     setPhoto(e.target.files[0]);
   };
 
-  const saveStudentForm = (e) => {
+  const saveTeacherForm = (e) => {
     e.preventDefault();
     setLoading(true);
-    createStudent(formData)
+    createTeacher(formData)
       .then((response) => {
         if (photo) {
           uploadPhoto(response.data.user_id, photo)
             .then(() => {
-              setSuccessMessage("Étudiant ajouté avec succès !");
+              setSuccessMessage("Enseignant ajouté avec succès !");
               setFormData({
                 firstName: "",
                 lastName: "",
@@ -99,14 +95,10 @@ const AddStudent = ({ handleViewChange }) => {
                 birthPlace: "",
                 address: { city: "", street: "", zipCod: "" },
                 infoContacts: { email: "", phoneNumber: "" },
-                role: { name: "STUDENT" },
+                role: { name: "TEACHER" },
                 password: "",
                 photo: null,
-                parent: null,
-                groups: { group_id: "", level: "", nameGroup: "" },
-                grades: [],
-                payments: [],
-                attendance: [],
+                taughtSubjects: [],
               });
               setPhoto(null);
             })
@@ -115,12 +107,25 @@ const AddStudent = ({ handleViewChange }) => {
               console.error("Erreur lors de l'upload de la photo", error);
             });
         } else {
-          setSuccessMessage("Étudiant ajouté avec succès !");
+          setSuccessMessage("Enseignant ajouté avec succès !");
+          setFormData({
+            firstName: "",
+            lastName: "",
+            gender: "",
+            birth_date: "",
+            birthPlace: "",
+            address: { city: "", street: "", zipCod: "" },
+            infoContacts: { email: "", phoneNumber: "" },
+            role: { name: "TEACHER" },
+            password: "",
+            photo: null,
+            taughtSubjects: [],
+          });
         }
       })
       .catch((error) => {
-        setErrorMessage("Erreur lors de l'ajout de l'étudiant.");
-        console.error("Erreur lors de l'ajout de l'étudiant", error);
+        setErrorMessage("Erreur lors de l'ajout de l'enseignant.");
+        console.error("Erreur lors de l'ajout de l'enseignant", error);
       })
       .finally(() => {
         setLoading(false);
@@ -138,7 +143,7 @@ const AddStudent = ({ handleViewChange }) => {
       </button>
       <div className="m-4 col-md-10 offset-md-3 m-auto">
         <h2 className="text-center card bg-secondary p-2 fs-3 text-light">
-          Ajouter un étudiant
+          Ajouter Enseignant
         </h2>
         {successMessage && (
           <div
@@ -159,7 +164,7 @@ const AddStudent = ({ handleViewChange }) => {
         <div className="row">
           <div className="card">
             <div className="card-body">
-              <form onSubmit={saveStudentForm}>
+              <form onSubmit={saveTeacherForm}>
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
@@ -303,35 +308,20 @@ const AddStudent = ({ handleViewChange }) => {
                   <div className="col form-group mb-2 fs-6">
                     <select
                       className="form-select"
-                      name="group_id"
-                      value={formData.groups.group_id}
-                      onChange={handleGroupsChange}
+                      name="subject_id"
+                      value={formData.taughtSubjects.subject_id}
+                      onChange={handleSubjectChange}
                       required
                     >
                       <option value="" className="text-danger">
-                        Sélectionner un groupe
+                        Sélectionner la matière enseignée
                       </option>
-                      {groups.map((group) => (
-                        <option key={group.group_id} value={group.group_id}>
-                          {group.nameGroup}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col form-group mb-2 fs-6">
-                    <select
-                      className="form-select"
-                      name="group_id"
-                      value={formData.groups.group_id}
-                      onChange={handleGroupsChange}
-                      required
-                    >
-                      <option value="" className="text-danger">
-                        Sélectionner le Niveau
-                      </option>
-                      {groups.map((group) => (
-                        <option key={group.group_id} value={group.group_id}>
-                          {group.level}
+                      {taughtSubjects.map((subject) => (
+                        <option
+                          key={subject.subject_id}
+                          value={subject.subject_id}
+                        >
+                          {subject.nameSubject}
                         </option>
                       ))}
                     </select>
@@ -355,4 +345,4 @@ const AddStudent = ({ handleViewChange }) => {
   );
 };
 
-export default AddStudent;
+export default AddTeacher;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import TeacherService from "../../../service/TeacherService";
 import { Link } from "react-router-dom";
 import DeleteTeacherModal from "./DeleteTeacherModal";
+import TeacherService from "../../../service/TeacherService";
 
 const TeacherList = () => {
   const [teachers, setTeachers] = useState([]);
@@ -76,30 +76,6 @@ const TeacherList = () => {
 
   return (
     <>
-      <div className="d-flex align-items-center justify-content-end m-auto position-relative w-50 me-5">
-        <button
-          className="bg-primary text-light fw-semibold rounded-pill p-1"
-          style={{ marginRight: "30px", width: "120px" }}
-        >
-          + Ajouter
-        </button>
-
-        {showSearch && (
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Recherche..."
-            style={{ width: "200px", marginLeft: "5px" }}
-          />
-        )}
-        <div
-          className="d-flex align-items-center"
-          style={{ cursor: "pointer" }}
-          onClick={handleSearchToggle}
-        >
-          <i className="fa-solid fa-magnifying-glass fw-bold"></i>
-        </div>
-      </div>
       <div className="p-2 ps-4">
         <i
           class="fa-solid fa-arrow-left-long bg-primary rounded-circle ms-2 text-light"

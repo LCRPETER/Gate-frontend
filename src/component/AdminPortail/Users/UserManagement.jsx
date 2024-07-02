@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "tw-elements";
 import UserList from "./UserList";
-import ParentList from "../Parents/ParentList";
-import TeacherList from "../Teachers/TeacherList";
 import StudentManagement from "../Students/StudentManagement";
+import TeacherManagement from "../Teachers/TeacherManagement";
+import ParentManagement from "../Parents/ParentManagement";
 
 const UserManagement = () => {
   const [currentView, setCurrentView] = useState("users");
@@ -24,9 +24,9 @@ const UserManagement = () => {
       case "students":
         return <StudentManagement />;
       case "teachers":
-        return <TeacherList />;
+        return <TeacherManagement />;
       case "parents":
-        return <ParentList />;
+        return <ParentManagement />;
       default:
         return <UserList />;
     }

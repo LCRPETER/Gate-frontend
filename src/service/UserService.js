@@ -10,11 +10,15 @@ const getAllUsers = () => {
 };
 
 const getUserById = (id) => {
-  return axios.get(`${API_URL}/users/${id}`);
+  return axios.get(`${API_URL}/users/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
 const getUsersByRole = (role) => {
-  return axios.get(`${API_URL}/users/role/${role}`);
+  return axios.get(`${API_URL}/users/role/${role}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };
 
 const searchUsersByFirstNameOrLastName = (firstName, lastName) => {

@@ -12,7 +12,7 @@ const GroupSchedule = ({ groupId, scheduleId }) => {
         setSchedule(response.data);
         setLoading(false);
       })
-      .catch((error) => {
+      .catch(() => {
         setError("There was an error fetching the schedule!");
         setLoading(false);
       });

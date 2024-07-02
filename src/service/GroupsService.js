@@ -7,9 +7,19 @@ export const getAllGroupes = () =>
     headers: { Authorization: localStorage.getItem("token") },
   });
 
-export const postGroupes = (group) => axios.post(API_URL, group);
+export const getStudentsByGroupId = (groupId) =>
+  axios.get(`${API_URL}/${groupId}/student`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+
+export const postGroupes = (group) =>
+  axios.post(API_URL, group, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 
 export const deleteGroupById = (id) => {
   console.log("Deleting Group ID: ", id);
-  return axios.delete(`${API_URL}/groups/delete/${id}`);
+  return axios.delete(`${API_URL}/groups/delete/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import ParentService from "../../../service/ParentService";
 import { useParams } from "react-router-dom";
+import { getParentById } from "../../../service/ParentService";
 
 const ParentDetail = () => {
   const { id } = useParams();
@@ -8,7 +8,7 @@ const ParentDetail = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    ParentService.getParentById(id)
+    getParentById(id)
       .then((response) => {
         setParent(response.data);
       })

@@ -13,8 +13,7 @@ const AuthService = {
       });
       if (response.data.bearer) {
         const token = response.data.bearer;
-        alert(token);
-        alert(token.replace(/[{}]/g, ""));
+        console.log(token);
         localStorage.setItem("token", token.replace(/[{}]/g, ""));
         localStorage.setItem("role", response.data.role);
       }

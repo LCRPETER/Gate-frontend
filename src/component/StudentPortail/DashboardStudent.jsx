@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import UserManagement from "../AdminPortail/Users/UserManagement";
+import StudentNotes from "./StudentNotes";
+import StudentAssessment from "./StudentAssessment";
 
 const DashboardStudent = ({ handleViewChange, currentView }) => {
   const renderView = () => {
@@ -9,18 +10,18 @@ const DashboardStudent = ({ handleViewChange, currentView }) => {
     };
 
     switch (currentView) {
-      case "users":
-        return <UserManagement />;
-      case "groups":
-        return <div>Groupes</div>;
-      case "subjects":
-        return <div>Matières</div>;
-      case "schedules":
-        return <div>Emplois du temps</div>;
-      case "courses":
-        return <div>Cours</div>;
-      case "payments":
-        return <div>Règlement Paiement</div>;
+      case "personalInfo":
+        return <div></div>;
+      case "schedule":
+        return <div></div>;
+      case "grades":
+        return <StudentNotes />;
+      case "evaluations":
+        return <StudentAssessment />;
+      case "absenceHistory":
+        return <StudentAssiduite />;
+      case "paymentHistory":
+        return <div></div>;
       default:
         return (
           <div
@@ -31,93 +32,101 @@ const DashboardStudent = ({ handleViewChange, currentView }) => {
               height: "70vh",
             }}
           >
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
               <div
                 className={`h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
-                  "users"
+                  "personalInfo"
                 )}`}
               >
-                Information personnelle
+                Information Personnelle
               </div>
               <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("users")}>
+                <Link to="#" onClick={() => handleViewChange("personalInfo")}>
                   <i
-                    className="fa-solid fa-id-card fs-1 bg-brown-beige"
+                    className="fa-solid fa-user fs-1 bg-brown-beige"
                     style={{ cursor: "pointer" }}
                   ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
-              <div className="h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center">
-                Emplois du temps
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+              <div
+                className={`h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                  "schedule"
+                )}`}
+              >
+                Emploi du Temps
               </div>
               <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("groups")}>
-                  <div className="w-100 bg-brown-beige rounded-1">
-                    <div
-                      className="icon-group m-auto"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <i className="fa-solid fa-calendar-days fs-1"></i>
-                    </div>
-                  </div>
+                <Link to="#" onClick={() => handleViewChange("schedule")}>
+                  <i
+                    className="fa-solid fa-calendar-days fs-1 bg-brown-beige"
+                    style={{ cursor: "pointer" }}
+                  ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
-              <div className="h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center">
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+              <div
+                className={`h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                  "grades"
+                )}`}
+              >
                 Notes
               </div>
               <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("subjects")}>
-                  <div
-                    className="w-100 p-1 rounded-1 bg-brown-beige d-flex align-items-center "
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className="h-25 d-flex align-items-center me-1">
-                      <i className="fa-regular fa-clipboard fs-1"></i>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
-              <div className="h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center">
-                Evaluation
-              </div>
-              <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("schedules")}>
+                <Link to="#" onClick={() => handleViewChange("grades")}>
                   <i
-                    className="fa-solid fa-chart-line fs-1 bg-brown-beige"
+                    className="fa-solid fa-book fs-1 bg-brown-beige"
                     style={{ cursor: "pointer" }}
                   ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
-              <div className="h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center">
-                Assiduite
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+              <div
+                className={`h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                  "evaluations"
+                )}`}
+              >
+                Evaluations
               </div>
               <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("assiduite")}>
-                  <div
-                    className="w-100 p-1 bg-brown-beige rounded-1 d-flex align-items-center"
+                <Link to="#" onClick={() => handleViewChange("evaluations")}>
+                  <i
+                    className="fa-solid fa-clipboard-check fs-1 bg-brown-beige"
                     style={{ cursor: "pointer" }}
-                  >
-                    <div>
-                      <i className="fa-solid fa-user-clock fs-1"></i>
-                    </div>
-                  </div>
+                  ></i>
                 </Link>
               </div>
             </div>
-            <div className="bg-light mini-box shadow-sm m-auto rounded-0">
-              <div className="h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center">
-                Paiement
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+              <div
+                className={`h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                  "absenceHistory"
+                )}`}
+              >
+                Historique des Absences
               </div>
               <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("payments")}>
+                <Link to="#" onClick={() => handleViewChange("absenceHistory")}>
+                  <i
+                    className="fa-solid fa-calendar-times fs-1 bg-brown-beige"
+                    style={{ cursor: "pointer" }}
+                  ></i>
+                </Link>
+              </div>
+            </div>
+            <div className="bg-light mini-box shadow-sm m-auto rounded-0 ">
+              <div
+                className={`h-25 bg-orange-peel rounded-0 text-light d-flex align-items-center justify-content-center ${isActive(
+                  "paymentHistory"
+                )}`}
+              >
+                Historique des Paiements
+              </div>
+              <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
+                <Link to="#" onClick={() => handleViewChange("paymentHistory")}>
                   <i
                     className="fa-solid fa-money-check-dollar fs-1 bg-brown-beige"
                     style={{ cursor: "pointer" }}

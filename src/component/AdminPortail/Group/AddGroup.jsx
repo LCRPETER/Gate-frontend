@@ -5,10 +5,11 @@ const AddGroup = ({ handleViewChange }) => {
   const [nameGroup, setNameGroup] = useState("");
   const [level, setLevel] = useState("");
   const [schoolYear, setSchoolYear] = useState("");
-  const [student, setStudent] = useState(null);
-  const [taughtSubjects, setTaughtSubjects] = useState(null);
-  const [schedules, setSchedules] = useState(null);
+  const [student, setStudent] = useState([]);
+  const [taughtSubjects, setTaughtSubjects] = useState([]);
+  const [schedules, setSchedules] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const saveGroupForm = (e) => {
     e.preventDefault();
@@ -24,9 +25,16 @@ const AddGroup = ({ handleViewChange }) => {
     postGroupes(group)
       .then((response) => {
         setSuccessMessage("Groupe ajouté avec succès !");
+        setErrorMessage("");
         console.log(response.data);
       })
       .catch((error) => {
+        setSuccessMessage("");
+        if (error.response && error.response.data) {
+          setErrorMessage(error.response.data);
+        } else {
+          setErrorMessage("Erreur lors de l'ajout du groupe");
+        }
         console.error("Erreur lors de l'ajout du groupe", error);
       });
   };
@@ -50,6 +58,14 @@ const AddGroup = ({ handleViewChange }) => {
             style={{ backgroundColor: "white", color: "green" }}
           >
             {successMessage}
+          </div>
+        )}
+        {errorMessage && (
+          <div
+            className="alert alert-danger text-center"
+            style={{ backgroundColor: "white", color: "red" }}
+          >
+            {errorMessage}
           </div>
         )}
         <div className="row">
@@ -81,8 +97,8 @@ const AddGroup = ({ handleViewChange }) => {
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
-                      type="date"
-                      placeholder="Année scolaires"
+                      type="text"
+                      placeholder="Année scolaire (ex: 2020/2024)"
                       name="schoolYear"
                       value={schoolYear}
                       onChange={(e) => setSchoolYear(e.target.value)}
@@ -92,9 +108,9 @@ const AddGroup = ({ handleViewChange }) => {
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
-                      placeholder="list étudiant"
+                      placeholder="Liste étudiants"
                       name="student"
-                      value={student}
+                      value={student.join(", ")}
                       readOnly
                       className="form-control"
                     />
@@ -104,9 +120,9 @@ const AddGroup = ({ handleViewChange }) => {
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
-                      placeholder="list emploi du temps"
+                      placeholder="Liste emploi du temps"
                       name="schedules"
-                      value={schedules}
+                      value={schedules.join(", ")}
                       readOnly
                       className="form-control"
                     />
@@ -114,9 +130,9 @@ const AddGroup = ({ handleViewChange }) => {
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
-                      placeholder="list matières"
+                      placeholder="Liste matières"
                       name="taughtSubjects"
-                      value={taughtSubjects}
+                      value={taughtSubjects.join(", ")}
                       readOnly
                       className="form-control"
                     />
@@ -126,7 +142,7 @@ const AddGroup = ({ handleViewChange }) => {
                   <div className="col form-group mt-3 fs-6 d-flex align-items-center justify-content-center ">
                     <button
                       type="submit"
-                      className="shadow bg-teal p-1 w-25 text-light fw-semibold rounded-2"
+                      className="shadow bg-teal p-1 pe-4 ps-4 text-light fw-semibold rounded-2"
                     >
                       Ajouter
                     </button>

@@ -39,6 +39,7 @@ const App = () => {
           <Route path="/student-assessment" element={<StudentAssessment />} />
           <Route path="/schedule" element={<ScheduleManagement />} />
           <Route path="/AddCourse" element={<AddCourse />} />
+          s{" "}
           <Route
             path="/groups/:groupId/schedules/:scheduleId"
             element={<GroupSchedule />}

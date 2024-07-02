@@ -11,13 +11,18 @@ const UserDetail = ({ selectedUser }) => {
     if (selectedUser) {
       setUser(selectedUser);
     } else {
-      UserService.getUserById(id)
+      UserService.getStudentById(id) // Utilisation de votre méthode pour récupérer un étudiant par ID
         .then((response) => {
           setUser(response.data);
         })
         .catch((error) => {
-          console.error("There was an error fetching the user details!", error);
-          setError("There was an error fetching the user details.");
+          console.error(
+            "Erreur lors de la récupération des détails de l'utilisateur !",
+            error
+          );
+          setError(
+            "Erreur lors de la récupération des détails de l'utilisateur."
+          );
         });
     }
   }, [id, selectedUser]);
@@ -27,15 +32,15 @@ const UserDetail = ({ selectedUser }) => {
   }
 
   if (!user) {
-    return <div>Loading...</div>;
+    return <div>Chargement en cours...</div>;
   }
 
   return (
     <div>
-      <ul className="p-6 " style={{ width: "25%", minWidth: "25%" }}>
+      <ul className="p-6" style={{ width: "25%", minWidth: "25%" }}>
         <li>
           <img
-            src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+            src="../../../public/asset/images/piere.png"
             className="rounded-circle mb-6"
             style={{ width: "150px" }}
             alt="Avatar"

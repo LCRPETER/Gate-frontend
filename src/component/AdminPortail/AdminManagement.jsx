@@ -5,9 +5,11 @@ import GroupManagement from "./Group/GroupManagement";
 import SubjectManagement from "./Subject/SubjectManagement";
 import CourseManagement from "./Course/CourseManagement";
 import ScheduleManagement from "./Schedule/ScheduleManagement";
+import Logout from "../Logout/Logout";
 
 const AdminManagement = () => {
   const [currentView, setCurrentView] = useState("dashboard");
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleViewChange = (view) => {
     setCurrentView(view);
@@ -15,6 +17,14 @@ const AdminManagement = () => {
 
   const isActive = (view) => {
     return currentView === view ? "active" : "";
+  };
+
+  const handleLogoutClick = () => {
+    setShowLogoutModal(true);
+  };
+
+  const closeLogoutModal = () => {
+    setShowLogoutModal(false);
   };
 
   const renderView = () => {
@@ -38,8 +48,8 @@ const AdminManagement = () => {
         return <CourseManagement />;
       case "payments":
         return <div>payments</div>;
-      case "settings":
-        return <div>Paramètre</div>;
+      case "logout":
+        return <Logout />;
       default:
         return (
           <Dashboard
@@ -277,30 +287,18 @@ const AdminManagement = () => {
               }}
             ></span>
           </div>
-          <div
-            className="mb-2 text-light ps-3 pe-4 d-flex align-items-center "
-            style={{ height: "45px" }}
-            onClick={() => handleViewChange("settings")}
-          >
-            <div
-              className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
-                "settings"
-              )}`}
-              style={{ cursor: "pointer" }}
-            >
-              <i className="fa-solid fa-gear fs-5"></i> Paramètre
-            </div>
-          </div>
         </div>
       </div>
       <div className="box-right p-3 position-relative rounded-0 d-flex align-items-center justify-content-between">
         <div className="fs-2 fw-semibold">Bienvenue dans votre Portail</div>
         <div className="p-2 fw-semibold">
           <div className="" style={{ cursor: "pointer" }}>
-            <div className="text-center">
-              <i className="fa-solid fa-user fs-5 bg-brown-beige"></i>{" "}
+            <div className="text-center ">
+              <i
+                className="fa-solid fa-arrow-right-from-bracket fs-4 text-teal"
+                onClick={handleLogoutClick}
+              ></i>
             </div>
-            <div className="fs-6 fw-semibold">Profil</div>
           </div>
         </div>
         <span
@@ -315,6 +313,7 @@ const AdminManagement = () => {
         ></span>
       </div>
       <div className="box-right-center rounded-0">{renderView()}</div>
+      {showLogoutModal && <Logout onClose={closeLogoutModal} />}
     </div>
   );
 };
