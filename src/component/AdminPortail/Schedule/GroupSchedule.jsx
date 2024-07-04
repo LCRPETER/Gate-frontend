@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import "./Schedule.css"; // Assurez-vous de créer ce fichier pour les styles
+import "./Schedule.css";
+import { getGroupScheduleById } from "../../../service/ScheduleService";
 
 const GroupSchedule = ({ groupId, scheduleId }) => {
   const [schedule, setSchedule] = useState(null);
@@ -7,7 +8,7 @@ const GroupSchedule = ({ groupId, scheduleId }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    ScheduleService.getGroupScheduleById(groupId, scheduleId)
+    getGroupScheduleById(groupId, scheduleId)
       .then((response) => {
         setSchedule(response.data);
         setLoading(false);
@@ -42,16 +43,14 @@ const GroupSchedule = ({ groupId, scheduleId }) => {
     "Sunday",
   ];
 
-  const hours = Array.from({ length: 11 }, (_, i) => i + 8); // Heures de 8h à 18h
+  const hours = Array.from({ length: 11 }, (_, i) => i + 8);
 
   const getBackgroundColor = (courseName) => {
-    // Définir des couleurs de fond pour chaque matière
     const colors = {
       UML: "#FFDDC1",
       Analyse: "#FFC1DD",
       "Machine Learning": "#C1E1FF",
       History: "#D3FFC1",
-      // Ajoutez plus de matières et de couleurs ici
     };
     return colors[courseName] || "#FFFFFF";
   };
@@ -131,40 +130,3 @@ const GroupSchedule = ({ groupId, scheduleId }) => {
 };
 
 export default GroupSchedule;
-
-/*
-const schedule = [
-  {
-    day: "Lundi",
-    time: "7:00",
-    subject: "Machine Learning",
-    color: "#6c757d",
-  },
-  { day: "Lundi", time: "12:00", subject: "Python", color: "#dc3545" },
-  { day: "Mardi", time: "8:00", subject: "Java", color: "#6c757d" },
-  { day: "Mardi", time: "13:00", subject: "Anglais", color: "#28a745" },
-  {
-    day: "Jeudi",
-    time: "8:00",
-    subject: "Sécurité Informatique",
-    color: "#d39e00",
-  },
-  {
-    day: "Jeudi",
-    time: "13:00",
-    subject: "Design Graphique",
-    color: "#ffc107",
-  },
-  {
-    day: "Vendredi",
-    time: "8:00",
-    subject: "Framework Web, Symfony",
-    color: "#17a2b8",
-  },
-  {
-    day: "Vendredi",
-    time: "13:00",
-    subject: "Virtualisation Et Cloud",
-    color: "#007bff",
-  },
-];*/

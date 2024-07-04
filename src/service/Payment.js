@@ -8,8 +8,8 @@ export const getAllPayments = () => {
   });
 };
 
-export const createPayment = (subject) => {
-  return axios.post(API_URL, subject, {
+export const createPayment = (payment) => {
+  return axios.post(API_URL, payment, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

@@ -11,7 +11,7 @@ const UserDetail = ({ selectedUser }) => {
     if (selectedUser) {
       setUser(selectedUser);
     } else {
-      UserService.getStudentById(id) // Utilisation de votre méthode pour récupérer un étudiant par ID
+      UserService.getStudentById(id)
         .then((response) => {
           setUser(response.data);
         })

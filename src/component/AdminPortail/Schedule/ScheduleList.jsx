@@ -1,56 +1,58 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import DeleteCourseModal from "./DeleteCourseModal";
-import { getAllCourses } from "../../../service/CourseService";
+import {
+  deleteSchedulesById,
+  getAllSchedulesSortedByDate,
+} from "../../../service/ScheduleService";
+import "tw-elements";
+import DeleteScheduleModal from "./DeleteScheduleModal";
 
-const CourseList = () => {
-  const [courses, setCourses] = useState([]);
+const ScheduleList = () => {
+  const [schedules, setSchedules] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedSchedule, setSelectedSchedule] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const coursesPerPage = 3;
+  const schedulesPerPage = 5;
 
   useEffect(() => {
-    getAllCourses()
+    getAllSchedulesSortedByDate()
       .then((response) => {
-        setCourses(response.data);
+        setSchedules(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the courses!", error);
+        console.error("There was an error fetching the schedules!", error);
       });
   }, []);
 
-  const handleDeleteClick = (course) => {
-    setSelectedCourse(course);
+  const handleDeleteClick = (schedule) => {
+    setSelectedSchedule(schedule);
     setShowModal(true);
   };
-
   const handleDeleteConfirm = () => {
-    if (selectedCourse && selectedCourse.course_id) {
-      CourseService.deleteGroupById(selectedCourse.course_id)
+    if (selectedSchedule) {
+      deleteSchedulesById(selectedSchedule.schedule_id)
         .then(() => {
-          setGroups(
-            courses.filter(
-              (course) => course.course_id !== selectedCourse.course_id
+          setSchedules(
+            schedules.filter(
+              (schedule) =>
+                schedule.schedule_id !== selectedSchedule.schedule_id
             )
           );
           setShowModal(false);
-          setSelectedGroup(null);
+          setSelectedSchedule(null);
         })
         .catch((error) => {
-          console.error("There was an error deleting the course!", error);
+          console.error("There was an error deleting the schedule!", error);
           setShowModal(false);
-          setSelectedGroup(null);
+          setSelectedSchedule(null);
         });
-    } else {
-      console.error("Selected course is not properly defined");
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedGroup(null);
+    setSelectedSchedule(null);
   };
 
   const handlePreviousPage = () => {
@@ -60,13 +62,16 @@ const CourseList = () => {
   };
 
   const handleNextPage = () => {
-    if ((currentPage + 1) * coursesPerPage < courses.length) {
+    if ((currentPage + 1) * schedulesPerPage < schedules.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  const startIndex = currentPage * coursesPerPage;
-  const currentCourses = courses.slice(startIndex, startIndex + coursesPerPage);
+  const startIndex = currentPage * schedulesPerPage;
+  const currentSchedules = schedules.slice(
+    startIndex,
+    startIndex + schedulesPerPage
+  );
 
   return (
     <>
@@ -83,29 +88,31 @@ const CourseList = () => {
         ></i>
       </div>
       <div className="container mt-1" style={{ width: "95%" }}>
-        {currentCourses.length > 0 ? (
+        {currentSchedules.length > 0 ? (
           <table className="table table-striped table-bordered">
             <thead>
               <tr>
-                <th className="fw-bold">Matière</th>
-                <th className="fw-bold">Jour</th>
-                <th className="fw-bold">Date</th>
-                <th className="fw-bold">Heure Début</th>
-                <th className="fw-bold">Heure Fin</th>
+                <th className="fw-bold">Nom du Groupe</th>
+                <th className="fw-bold">Niveau</th>
+                <th className="fw-bold">Description</th>
+                <th className="fw-bold">Date de début</th>
+                <th className="fw-bold">Date de fin</th>
+                <th className="fw-bold">Modifier</th>
+                <th className="fw-bold">Supprimer</th>
               </tr>
             </thead>
             <tbody>
-              {currentCourses.map((course) => (
-                <tr key={course.course_id}>
+              {currentSchedules.map((schedule) => (
+                <tr key={schedule.schedule_id}>
                   <td>
-                    <Link to={`/courses/${course.course_id}`}>
-                      {course.nameSubject}
+                    <Link to={`/schedules/${schedule.schedule_id}`}>
+                      {schedule.groupName}
                     </Link>
                   </td>
-                  <td>{course.dayOfWeek}</td>
-                  <td>{course.dateCourse}</td>
-                  <td>{course.startTime}</td>
-                  <td>{course.endTime}</td>
+                  <td>{schedule.groupLevel}</td>
+                  <td>{schedule.description}</td>
+                  <td>{schedule.startDate}</td>
+                  <td>{schedule.endDate}</td>
                   <td className="text-center fs-3">
                     <i
                       className="fa-solid fa-pen-to-square text-primary"
@@ -116,7 +123,7 @@ const CourseList = () => {
                     <i
                       className="fa-solid fa-trash"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleDeleteClick(course)}
+                      onClick={() => handleDeleteClick(schedule)}
                     ></i>
                   </td>
                 </tr>
@@ -124,12 +131,11 @@ const CourseList = () => {
             </tbody>
           </table>
         ) : (
-          <p>Liste des coursees vide.</p>
+          <p>Liste des emplois du temps vide.</p>
         )}
-
-        <DeleteCourseModal
+        <DeleteScheduleModal
           show={showModal}
-          course={selectedCourse}
+          schedule={selectedSchedule}
           onClose={handleCloseModal}
           onConfirm={handleDeleteConfirm}
         />
@@ -148,11 +154,11 @@ const CourseList = () => {
           ></i>
         </div>
         <div>
-          {currentPage + 1}/{Math.ceil(courses.length / coursesPerPage)}
+          {currentPage + 1}/{Math.ceil(schedules.length / schedulesPerPage)}
         </div>
       </div>
     </>
   );
 };
 
-export default CourseList;
+export default ScheduleList;

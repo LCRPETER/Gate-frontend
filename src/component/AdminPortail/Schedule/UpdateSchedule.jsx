@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { createSchedules } from "../../../service/ScheduleService";
+import { updateSchedule } from "../../../service/ScheduleService";
 import { getAllGroupes } from "../../../service/GroupsService";
 
-const AddSchedule = ({ handleViewChange }) => {
+const UpdateSchedule = ({ handleViewChange, scheduleToUpdate }) => {
   const [scheduleDescription, setScheduleDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -19,7 +19,14 @@ const AddSchedule = ({ handleViewChange }) => {
       .catch((error) => {
         console.error("Erreur lors de la récupération des groupes", error);
       });
-  }, []);
+
+    if (scheduleToUpdate) {
+      setScheduleDescription(scheduleToUpdate.schedule_description);
+      setStartDate(scheduleToUpdate.startDate);
+      setEndDate(scheduleToUpdate.endDate);
+      setSelectedGroup(scheduleToUpdate.groups);
+    }
+  }, [scheduleToUpdate]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,7 +47,14 @@ const AddSchedule = ({ handleViewChange }) => {
 
   const saveScheduleForm = (e) => {
     e.preventDefault();
+
+    if (!scheduleToUpdate) {
+      setErrorMessage("Aucun emploi du temps sélectionné pour la mise à jour.");
+      return;
+    }
+
     const schedule = {
+      schedule_id: scheduleToUpdate.schedule_id,
       schedule_description: scheduleDescription,
       startDate,
       endDate,
@@ -48,9 +62,9 @@ const AddSchedule = ({ handleViewChange }) => {
       course: [],
     };
 
-    createSchedules(schedule)
+    updateSchedule(schedule.schedule_id, schedule)
       .then((response) => {
-        setSuccessMessage("Emploi du temps ajouté avec succès !");
+        setSuccessMessage("Emploi du temps mis à jour avec succès !");
         setErrorMessage("");
         console.log(response.data);
       })
@@ -59,9 +73,12 @@ const AddSchedule = ({ handleViewChange }) => {
         if (error.response && error.response.data) {
           setErrorMessage(error.response.data);
         } else {
-          setErrorMessage("Erreur lors de l'ajout de l'emploi du temps");
+          setErrorMessage("Erreur lors de la mise à jour de l'emploi du temps");
         }
-        console.error("Erreur lors de l'ajout de l'emploi du temps", error);
+        console.error(
+          "Erreur lors de la mise à jour de l'emploi du temps",
+          error
+        );
       });
   };
 
@@ -76,7 +93,7 @@ const AddSchedule = ({ handleViewChange }) => {
       </button>
       <div className="m-4 col-md-6 offset-md-3 m-auto">
         <h2 className="text-center card bg-secondary p-2 fs-3 text-light">
-          Ajouter un emploi du temps
+          Modifier un emploi du temps
         </h2>
         {successMessage && (
           <div
@@ -139,6 +156,7 @@ const AddSchedule = ({ handleViewChange }) => {
                       name="groups"
                       className="form-select"
                       onChange={handleGroupChange}
+                      value={selectedGroup?.group_id || ""}
                       required
                     >
                       <option value="">Sélectionner un groupe</option>
@@ -156,7 +174,7 @@ const AddSchedule = ({ handleViewChange }) => {
                       type="submit"
                       className="shadow bg-teal p-1 pe-4 ps-4 text-light fw-semibold rounded-2"
                     >
-                      Ajouter
+                      Modifier
                     </button>
                   </div>
                 </div>
@@ -169,4 +187,4 @@ const AddSchedule = ({ handleViewChange }) => {
   );
 };
 
-export default AddSchedule;
+export default UpdateSchedule;

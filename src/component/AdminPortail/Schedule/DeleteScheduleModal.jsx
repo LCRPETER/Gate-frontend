@@ -1,15 +1,15 @@
 import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
-const DeleteCourseModal = ({ show, course, onClose, onConfirm }) => {
+const DeleteScheduleModal = ({ show, schedule, onClose, onConfirm }) => {
   return (
     <Modal show={show} onHide={onClose}>
       <Modal.Header closeButton>
         <Modal.Title>Confirmation de suppression</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        Êtes-vous sûr de vouloir supprimer le groupe:{" "}
-        {course && `${course.id_course}`}?
+        Êtes-vous sûr de vouloir supprimer l'emploi du temps :{" "}
+        {schedule && `${schedule.schedule_id}`}?
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
@@ -23,4 +23,4 @@ const DeleteCourseModal = ({ show, course, onClose, onConfirm }) => {
   );
 };
 
-export default DeleteCourseModal;
+export default DeleteScheduleModal;

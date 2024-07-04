@@ -4,8 +4,11 @@ import UserManagement from "./Users/UserManagement";
 import GroupManagement from "./Group/GroupManagement";
 import SubjectManagement from "./Subject/SubjectManagement";
 import CourseManagement from "./Course/CourseManagement";
-import ScheduleManagement from "./Schedule/ScheduleManagement";
 import Logout from "../Logout/Logout";
+import ScheduleList from "./Schedule/ScheduleList";
+import ScheduleManagement from "./Schedule/ScheduleManagement";
+import ParentManagement from "./Parents/ParentManagement";
+import PaymentManagement from "./Payement/PaymentManagement";
 
 const AdminManagement = () => {
   const [currentView, setCurrentView] = useState("dashboard");
@@ -47,7 +50,7 @@ const AdminManagement = () => {
       case "courses":
         return <CourseManagement />;
       case "payments":
-        return <div>payments</div>;
+        return <PaymentManagement />;
       case "logout":
         return <Logout />;
       default:

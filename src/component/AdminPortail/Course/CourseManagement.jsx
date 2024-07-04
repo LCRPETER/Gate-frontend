@@ -3,7 +3,7 @@ import "tw-elements";
 import CourseList from "./CourseList";
 import AddCourse from "./AddCourse";
 
-const CourseManagement = () => {
+const CourseManagement = ({ groupId }) => {
   const [currentView, setCurrentView] = useState("groups");
   const [showSearch, setShowSearch] = useState(false);
 
@@ -20,7 +20,9 @@ const CourseManagement = () => {
       case "cours":
         return <CourseList />;
       case "add-course":
-        return <AddCourse handleViewChange={handleViewChange} />;
+        return (
+          <AddCourse handleViewChange={handleViewChange} groupId={groupId} />
+        );
       default:
         return <CourseList />;
     }

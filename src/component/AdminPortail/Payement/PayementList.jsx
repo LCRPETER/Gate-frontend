@@ -1,56 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import DeleteCourseModal from "./DeleteCourseModal";
-import { getAllCourses } from "../../../service/CourseService";
+import "tw-elements";
+import { getAllPayments } from "../../../service/Payment";
+import DeletePaymentModal from "./DeletePaymentModal";
 
-const CourseList = () => {
-  const [courses, setCourses] = useState([]);
+const PaymentList = () => {
+  const [payments, setPayments] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedPayment, setSelectedPayment] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const coursesPerPage = 3;
+  const paymentPerPage = 4;
 
   useEffect(() => {
-    getAllCourses()
+    getAllPayments()
       .then((response) => {
-        setCourses(response.data);
+        setPayments(response.data);
       })
       .catch((error) => {
-        console.error("There was an error fetching the courses!", error);
+        console.error("There was an error fetching the payments!", error);
       });
   }, []);
 
-  const handleDeleteClick = (course) => {
-    setSelectedCourse(course);
+  const handleDeleteClick = (payment) => {
+    setSelectedPayment(payment);
     setShowModal(true);
   };
-
   const handleDeleteConfirm = () => {
-    if (selectedCourse && selectedCourse.course_id) {
-      CourseService.deleteGroupById(selectedCourse.course_id)
+    if (selectedPayment) {
+      deletePaymentsById(selectedPayment.payment_id)
         .then(() => {
-          setGroups(
-            courses.filter(
-              (course) => course.course_id !== selectedCourse.course_id
+          setPayments(
+            payments.filter(
+              (payment) => payment.payment_id !== selectedPayment.payment_id
             )
           );
           setShowModal(false);
-          setSelectedGroup(null);
+          setSelectedPayment(null);
         })
         .catch((error) => {
-          console.error("There was an error deleting the course!", error);
+          console.error("There was an error deleting the payment!", error);
           setShowModal(false);
-          setSelectedGroup(null);
+          setSelectedPayment(null);
         });
-    } else {
-      console.error("Selected course is not properly defined");
     }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedGroup(null);
+    setSelectedPayment(null);
   };
 
   const handlePreviousPage = () => {
@@ -60,13 +57,16 @@ const CourseList = () => {
   };
 
   const handleNextPage = () => {
-    if ((currentPage + 1) * coursesPerPage < courses.length) {
+    if ((currentPage + 1) * paymentPerPage < payments.length) {
       setCurrentPage(currentPage + 1);
     }
   };
 
-  const startIndex = currentPage * coursesPerPage;
-  const currentCourses = courses.slice(startIndex, startIndex + coursesPerPage);
+  const startIndex = currentPage * paymentPerPage;
+  const currentPayments = payments.slice(
+    startIndex,
+    startIndex + paymentPerPage
+  );
 
   return (
     <>
@@ -83,29 +83,25 @@ const CourseList = () => {
         ></i>
       </div>
       <div className="container mt-1" style={{ width: "95%" }}>
-        {currentCourses.length > 0 ? (
+        {currentPayments.length > 0 ? (
           <table className="table table-striped table-bordered">
             <thead>
               <tr>
-                <th className="fw-bold">Matière</th>
-                <th className="fw-bold">Jour</th>
+                <th className="fw-bold">Etudiant</th>
+                <th className="fw-bold">Mode de paiement</th>
+                <th className="fw-bold">Montant</th>
                 <th className="fw-bold">Date</th>
-                <th className="fw-bold">Heure Début</th>
-                <th className="fw-bold">Heure Fin</th>
+                <th className="fw-bold">Modifier</th>
+                <th className="fw-bold">Supprimer</th>
               </tr>
             </thead>
             <tbody>
-              {currentCourses.map((course) => (
-                <tr key={course.course_id}>
-                  <td>
-                    <Link to={`/courses/${course.course_id}`}>
-                      {course.nameSubject}
-                    </Link>
-                  </td>
-                  <td>{course.dayOfWeek}</td>
-                  <td>{course.dateCourse}</td>
-                  <td>{course.startTime}</td>
-                  <td>{course.endTime}</td>
+              {currentPayments.map((payment) => (
+                <tr key={payment.payment_id}>
+                  <td>{payment.studentFullName}</td>
+                  <td>{payment.paymentMethod}</td>
+                  <td>{payment.amountPay}</td>
+                  <td>{payment.paymentDate}</td>
                   <td className="text-center fs-3">
                     <i
                       className="fa-solid fa-pen-to-square text-primary"
@@ -116,7 +112,7 @@ const CourseList = () => {
                     <i
                       className="fa-solid fa-trash"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleDeleteClick(course)}
+                      onClick={() => handleDeleteClick(payment)}
                     ></i>
                   </td>
                 </tr>
@@ -124,12 +120,11 @@ const CourseList = () => {
             </tbody>
           </table>
         ) : (
-          <p>Liste des coursees vide.</p>
+          <p>Liste des paiements vide.</p>
         )}
-
-        <DeleteCourseModal
+        <DeletePaymentModal
           show={showModal}
-          course={selectedCourse}
+          payment={selectedPayment}
           onClose={handleCloseModal}
           onConfirm={handleDeleteConfirm}
         />
@@ -148,11 +143,10 @@ const CourseList = () => {
           ></i>
         </div>
         <div>
-          {currentPage + 1}/{Math.ceil(courses.length / coursesPerPage)}
+          {currentPage + 1}/{Math.ceil(payments.length / paymentPerPage)}
         </div>
       </div>
     </>
   );
 };
-
-export default CourseList;
+export default PaymentList;

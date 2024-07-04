@@ -17,6 +17,13 @@ export const postGroupes = (group) =>
     headers: { Authorization: localStorage.getItem("token") },
   });
 
+export const updateGroupById = (id, updatedGroup) => {
+  console.log("Updating Group ID: ", id);
+  return axios.put(`${API_URL}/${id}`, updatedGroup, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+};
+
 export const deleteGroupById = (id) => {
   console.log("Deleting Group ID: ", id);
   return axios.delete(`${API_URL}/groups/delete/${id}`, {

@@ -1,60 +1,104 @@
 import React, { useState, useEffect } from "react";
-import { createSubject } from "../../../service/SubjectService";
-import { getAllGroupes } from "../../../service/GroupsService";
+import { getAllSubjects } from "../../../service/SubjectService";
+import { createCourse } from "../../../service/CourseService";
+import { getAllSchedulesSortedByDate } from "../../../service/ScheduleService";
 
-const AddSubject = ({ handleViewChange }) => {
-  const [nameSubject, setNameSubject] = useState("");
-  const [description, setDescription] = useState("");
-  const [headTeacher, setHeadTeacher] = useState("");
-  const [groups, setGroups] = useState([]);
-  const [grades, setGrades] = useState([]);
-  const [course, setCourse] = useState([]);
+const AddCourse = ({ handleViewChange }) => {
+  const [subjectId, setSubjectId] = useState("");
+  const [dateCourse, setDateCourse] = useState("");
+  const [dayOfWeek, setDayOfWeek] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [selectedScheduleId, setSelectedScheduleId] = useState("");
+  const [schedules, setSchedules] = useState([]);
+  const [allSubjects, setAllSubjects] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [availableSchedules, setAvailableSchedules] = useState([]);
 
   useEffect(() => {
-    getAllGroupes()
+    getAllSubjects()
       .then((response) => {
-        setGroups(response.data);
+        setAllSubjects(response.data);
       })
       .catch((error) => {
-        console.error("Erreur lors de la récupération des groupes", error);
+        console.error("Erreur lors de la récupération des matières", error);
+      });
+
+    getAllSchedulesSortedByDate()
+      .then((response) => {
+        setAvailableSchedules(response.data);
+      })
+      .catch((error) => {
+        console.error(
+          "Erreur lors de la récupération des emplois du temps",
+          error
+        );
       });
   }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === "nameSubject") {
-      setNameSubject(value);
-    } else if (name === "description") {
-      setDescription(value);
-    } else if (name === "headTeacher") {
-      setHeadTeacher(value);
+    switch (name) {
+      case "subjectId":
+        setSubjectId(value);
+        break;
+      case "dateCourse":
+        setDateCourse(value);
+        break;
+      case "dayOfWeek":
+        setDayOfWeek(value);
+        break;
+      case "startTime":
+        setStartTime(value);
+        break;
+      case "endTime":
+        setEndTime(value);
+        break;
+      default:
+        break;
     }
   };
 
-  const handleGroupChange = (e) => {
-    const { value } = e.target;
-    const group = allGroups.find((g) => g.group_id === parseInt(value));
-    if (group && !groups.find((g) => g.group_id === group.group_id)) {
-      setGroups([...groups, group]);
+  const handleScheduleSelection = (e) => {
+    setSelectedScheduleId(e.target.value);
+    if (
+      e.target.value &&
+      !schedules.find(
+        (schedule) => schedule.schedule_id === parseInt(e.target.value)
+      )
+    ) {
+      setSchedules([...schedules, { schedule_id: parseInt(e.target.value) }]);
     }
   };
 
-  const saveSubjectForm = (e) => {
+  const saveCourseForm = (e) => {
     e.preventDefault();
-    const subject = {
-      nameSubject,
-      description,
-      headTeacher,
-      groups,
-      grades,
-      course,
+
+    if (
+      !subjectId ||
+      !dateCourse ||
+      !dayOfWeek ||
+      !startTime ||
+      !endTime ||
+      !selectedScheduleId
+    ) {
+      setErrorMessage("Veuillez remplir tous les champs obligatoires.");
+      return;
+    }
+
+    const newCourse = {
+      subject: { subject_id: parseInt(subjectId) },
+      dateCourse,
+      dayOfWeek,
+      startTime,
+      endTime,
+      schedules,
     };
 
-    createSubject(subject)
+    createCourse(newCourse)
       .then((response) => {
-        setSuccessMessage("Matière ajoutée avec succès !");
+        setSuccessMessage("Cours ajouté avec succès !");
         setErrorMessage("");
         console.log(response.data);
       })
@@ -63,9 +107,9 @@ const AddSubject = ({ handleViewChange }) => {
         if (error.response && error.response.data) {
           setErrorMessage(error.response.data);
         } else {
-          setErrorMessage("Erreur lors de l'ajout de la matière");
+          setErrorMessage("Erreur lors de l'ajout du cours");
         }
-        console.error("Erreur lors de l'ajout de la matière", error);
+        console.error("Erreur lors de l'ajout du cours", error);
       });
   };
 
@@ -80,7 +124,7 @@ const AddSubject = ({ handleViewChange }) => {
       </button>
       <div className="m-4 col-md-6 offset-md-3 m-auto">
         <h2 className="text-center card bg-secondary p-2 fs-3 text-light">
-          Ajouter une matière
+          Ajouter un cours
         </h2>
         {successMessage && (
           <div
@@ -101,25 +145,32 @@ const AddSubject = ({ handleViewChange }) => {
         <div className="row">
           <div className="card">
             <div className="card-body">
-              <form onSubmit={saveSubjectForm}>
+              <form onSubmit={saveCourseForm}>
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
-                    <input
-                      type="text"
-                      placeholder="Nom de la matière"
-                      name="nameSubject"
-                      value={nameSubject}
+                    <select
+                      name="subjectId"
+                      className="form-select"
+                      value={subjectId}
                       onChange={handleInputChange}
-                      className="form-control"
                       required
-                    />
+                    >
+                      <option value="">Sélectionner une matière</option>
+                      {allSubjects.map((subject) => (
+                        <option
+                          key={subject.subject_id}
+                          value={subject.subject_id}
+                        >
+                          {subject.nameSubject}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                   <div className="col form-group mb-2 fs-6">
                     <input
-                      type="text"
-                      placeholder="Description"
-                      name="description"
-                      value={description}
+                      type="date"
+                      name="dateCourse"
+                      value={dateCourse}
                       onChange={handleInputChange}
                       className="form-control"
                       required
@@ -130,23 +181,54 @@ const AddSubject = ({ handleViewChange }) => {
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
-                      placeholder="Professeur principal"
-                      name="headTeacher"
-                      value={headTeacher}
+                      placeholder="Jour de la semaine"
+                      name="dayOfWeek"
+                      value={dayOfWeek}
                       onChange={handleInputChange}
                       className="form-control"
+                      required
+                    />
+                  </div>
+                  <div className="col form-group mb-2 fs-6">
+                    <input
+                      type="text"
+                      placeholder="Heure de début"
+                      name="startTime"
+                      value={startTime}
+                      onChange={handleInputChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col form-group mb-2 fs-6">
+                    <input
+                      type="text"
+                      placeholder="Heure de fin"
+                      name="endTime"
+                      value={endTime}
+                      onChange={handleInputChange}
+                      className="form-control"
+                      required
                     />
                   </div>
                   <div className="col form-group mb-2 fs-6">
                     <select
-                      name="groups"
+                      name="selectedScheduleId"
                       className="form-select"
-                      onChange={handleGroupChange}
+                      value={selectedScheduleId}
+                      onChange={handleScheduleSelection}
+                      required
                     >
-                      <option value="">Sélectionner un groupe</option>
-                      {allGroups.map((group) => (
-                        <option key={group.group_id} value={group.group_id}>
-                          {group.nameGroup} - {group.level}
+                      <option value="">Sélectionner un emploi du temps</option>
+                      {availableSchedules.map((schedule) => (
+                        <option
+                          key={schedule.schedule_id}
+                          value={schedule.schedule_id}
+                        >
+                          {`${schedule.description}" " ${schedule.groupName} `}
+                          {schedule.description}
                         </option>
                       ))}
                     </select>
@@ -155,9 +237,9 @@ const AddSubject = ({ handleViewChange }) => {
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <ul>
-                      {groups.map((group) => (
-                        <li key={group.group_id}>
-                          {group.nameGroup} - {group.level}
+                      {schedules.map((schedule, index) => (
+                        <li key={index}>
+                          Emploi du temps ID: {schedule.schedule_id}
                         </li>
                       ))}
                     </ul>
@@ -182,4 +264,4 @@ const AddSubject = ({ handleViewChange }) => {
   );
 };
 
-export default AddSubject;
+export default AddCourse;
