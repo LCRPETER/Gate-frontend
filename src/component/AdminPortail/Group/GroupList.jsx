@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import DeleteGroupModal from "./DeleteGroupModal";
 import { deleteGroupById, getAllGroupes } from "../../../service/GroupsService";
+import UpdateGroup from "./UpdateGroup";
 
 const GroupList = () => {
   const [groups, setGroups] = useState([]);
@@ -9,8 +9,30 @@ const GroupList = () => {
   const [selectedGroup, setSelectedGroup] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedYear, setSelectedYear] = useState("");
+  const [currentView, setCurrentView] = useState("groups");
 
   const groupsPerPage = 3;
+
+  const handleViewChange = (view, groupId = null) => {
+    setSelectedGroup(groupId);
+    setCurrentView(view);
+  };
+
+  const renderView = () => {
+    switch (currentView) {
+      case "groups":
+        return renderGroupList();
+      case "update-group":
+        return (
+          <UpdateGroup
+            handleViewChange={handleViewChange}
+            groupId={selectedGroup}
+          />
+        );
+      default:
+        return renderGroupList();
+    }
+  };
 
   useEffect(() => {
     getAllGroupes()
@@ -66,7 +88,7 @@ const GroupList = () => {
 
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value);
-    setCurrentPage(0); // Reset to first page on year change
+    setCurrentPage(0);
   };
 
   const filteredGroups = selectedYear
@@ -79,7 +101,7 @@ const GroupList = () => {
     startIndex + groupsPerPage
   );
 
-  return (
+  const renderGroupList = () => (
     <>
       <div className="p-2 ps-4">
         <i
@@ -128,17 +150,16 @@ const GroupList = () => {
             <tbody>
               {currentGroups.map((group) => (
                 <tr key={group.group_id}>
-                  <td>
-                    <Link to={`/groups/${group.group_id}`}>
-                      {group.nameGroup}
-                    </Link>
-                  </td>
+                  <td>{group.nameGroup}</td>
                   <td>{group.level}</td>
                   <td>{group.schoolYear}</td>
                   <td className="text-center fs-3">
                     <i
                       className="fa-solid fa-pen-to-square text-primary"
                       style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        handleViewChange("update-group", group.group_id)
+                      }
                     ></i>
                   </td>
                   <td className="text-center fs-3 text-danger">
@@ -182,6 +203,7 @@ const GroupList = () => {
       </div>
     </>
   );
+  return <>{renderView()}</>;
 };
 
 export default GroupList;

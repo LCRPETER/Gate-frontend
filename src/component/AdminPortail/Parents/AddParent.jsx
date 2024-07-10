@@ -8,9 +8,9 @@ const AddParent = ({ handleViewChange }) => {
     gender: null,
     birth_date: null,
     birthPlace: null,
-    address: { city: "", street: "", zipCod: "" },
+    address: { city: "", street: "", zipCode: "" },
     infoContacts: { email: "", phoneNumber: "" },
-    role: { name: "" },
+    role: { name: "PARENT" },
     password: "",
     photo: null,
   });
@@ -67,7 +67,7 @@ const AddParent = ({ handleViewChange }) => {
                 gender: "",
                 birth_date: "",
                 birthPlace: "",
-                address: { city: "", street: "", zipCod: "" },
+                address: { city: "", street: "", zipCode: "" },
                 infoContacts: { email: "", phoneNumber: "" },
                 role: { name: "PARENT" },
                 password: "",
@@ -235,8 +235,8 @@ const AddParent = ({ handleViewChange }) => {
                     <input
                       type="text"
                       placeholder="Code postal"
-                      name="zipCod"
-                      value={formData.address.zipCod}
+                      name="zipCode"
+                      value={formData.address.zipCode}
                       onChange={handleAddressChange}
                       className="form-control"
                       required

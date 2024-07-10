@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import {
-  getStudentById,
-  updateStudent,
+  getParentById,
+  updateParent,
   uploadPhoto,
-} from "../../../service/StudentService";
-import { getAllGroupes } from "../../../service/GroupsService";
+} from "../../../service/ParentService";
 
-const UpdateStudent = ({ handleViewChange, studentId }) => {
+const UpdateParent = ({ handleViewChange, parentId }) => {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -15,64 +14,47 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
     birthPlace: "",
     address: { city: "", street: "", zipCode: "" },
     infoContacts: { email: "", phoneNumber: "" },
-    role: { name: "STUDENT" },
-    password: "",
+    role: { name: "PARENT" },
     photo: null,
-    groups: { group_id: "", nameGroup: "", level: "" },
   });
 
   const [photo, setPhoto] = useState(null);
-  const [groups, setGroups] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch student data by ID
-    getStudentById(studentId)
+    // Fetch parent data by ID
+    getParentById(parentId)
       .then((response) => {
-        const studentData = response.data;
+        const parentData = response.data;
 
         setFormData({
           ...formData,
-          firstName: studentData.firstName,
-          lastName: studentData.lastName,
-          gender: studentData.gender,
-          birth_date: studentData.birth_date,
-          birthPlace: studentData.birthplace,
+          firstName: parentData.firstName,
+          lastName: parentData.lastName,
+          gender: parentData.gender,
+          birth_date: parentData.birth_date,
+          birthPlace: parentData.birthplace,
           address: {
-            city: studentData.city,
-            street: studentData.street,
-            zipCode: studentData.zipCode,
+            city: parentData.city,
+            street: parentData.street,
+            zipCode: parentData.zipCode,
           },
           infoContacts: {
-            email: studentData.email,
-            phoneNumber: studentData.phoneNumber,
+            email: parentData.email,
+            phoneNumber: parentData.phoneNumber,
           },
-          photo: studentData.photo,
-          groups: {
-            group_id: studentData.group_id,
-            nameGroup: studentData.nameGroupe,
-            level: studentData.level,
-          },
+          photo: parentData.photo,
         });
       })
       .catch((error) => {
         console.error(
-          "Erreur lors de la récupération des données de l'étudiant",
+          "Erreur lors de la récupération des données du parent",
           error
         );
       });
-
-    // Fetch groups data
-    getAllGroupes()
-      .then((response) => {
-        setGroups(response.data);
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la récupération des groupes", error);
-      });
-  }, [studentId]);
+  }, [parentId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -104,25 +86,14 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
     }));
   };
 
-  const handleGroupsChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      groups: {
-        ...prevState.groups,
-        [name]: value,
-      },
-    }));
-  };
-
   const handlePhotoChange = (e) => {
     setPhoto(e.target.files[0]);
   };
 
-  const saveStudentForm = (e) => {
+  const saveParentForm = (e) => {
     e.preventDefault();
     setLoading(true);
-    const updatedStudent = {
+    const updatedParent = {
       firstName: formData.firstName,
       lastName: formData.lastName,
       gender: formData.gender,
@@ -133,23 +104,20 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
         street: formData.address.street,
         zipCode: formData.address.zipCode,
       },
-
       infoContacts: {
         email: formData.infoContacts.email,
         phoneNumber: formData.infoContacts.phoneNumber,
       },
-      groups: {
-        group_id: formData.groups.group_id,
-      },
+
       password: formData.password,
     };
 
-    updateStudent(studentId, updatedStudent)
+    updateParent(parentId, updatedParent)
       .then((response) => {
         if (photo) {
           uploadPhoto(response.data.user_id, photo)
             .then(() => {
-              setSuccessMessage("Étudiant modifié avec succès !");
+              setSuccessMessage("Parent modifié avec succès !");
               setPhoto(null);
             })
             .catch((error) => {
@@ -157,12 +125,12 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
               console.error("Erreur lors de l'upload de la photo", error);
             });
         } else {
-          setSuccessMessage("Étudiant modifié avec succès !");
+          setSuccessMessage("Parent modifié avec succès !");
         }
       })
       .catch((error) => {
-        setErrorMessage("Erreur lors de la modification de l'étudiant.");
-        console.error("Erreur lors de la modification de l'étudiant", error);
+        setErrorMessage("Erreur lors de la modification du parent.");
+        console.error("Erreur lors de la modification du parent", error);
       })
       .finally(() => {
         setLoading(false);
@@ -174,13 +142,13 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
       <button
         className="bg-teal text-light fw-semibold rounded p-1 position-absolute start-1 ps-2 pe-2"
         style={{ marginTop: "20px", top: "-50px" }}
-        onClick={() => handleViewChange("students")}
+        onClick={() => handleViewChange("parents")}
       >
         Retour
       </button>
       <div className="m-4 col-md-10 offset-md-3 m-auto">
         <h2 className="text-center card bg-secondary p-2 fs-3 text-light">
-          Modifier un étudiant
+          Modifier un parent
         </h2>
         {successMessage && (
           <div
@@ -201,7 +169,7 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
         <div className="row">
           <div className="card">
             <div className="card-body">
-              <form onSubmit={saveStudentForm}>
+              <form onSubmit={saveParentForm}>
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
@@ -332,44 +300,7 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
                     />
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col form-group mb-2 fs-6">
-                    <select
-                      className="form-select"
-                      name="group_id"
-                      value={formData.groups.group_id}
-                      onChange={handleGroupsChange}
-                      required
-                    >
-                      <option value="" className="text-danger">
-                        Sélectionner un groupe
-                      </option>
-                      {groups.map((group) => (
-                        <option key={group.group_id} value={group.group_id}>
-                          {group.nameGroup}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col form-group mb-2 fs-6">
-                    <select
-                      className="form-select"
-                      name="group_id"
-                      value={formData.groups.group_id}
-                      onChange={handleGroupsChange}
-                      required
-                    >
-                      <option value="" className="text-danger">
-                        Sélectionner le Niveau
-                      </option>
-                      {groups.map((group) => (
-                        <option key={group.group_id} value={group.group_id}>
-                          {group.level}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+
                 <div className="row">
                   <div className="col-12 form-group mb-2 fs-6">
                     <input
@@ -398,4 +329,4 @@ const UpdateStudent = ({ handleViewChange, studentId }) => {
   );
 };
 
-export default UpdateStudent;
+export default UpdateParent;

@@ -36,8 +36,8 @@ export const createSchedules = (schedule) => {
   });
 };
 
-export const updateSchedule = (id, updatedSchedule) => {
-  return axios.put(`${API_BASE_URL}/schedules/${id}`, updatedSchedule, {
+export const updateSchedule = (scheduleId, schedule) => {
+  return axios.put(`${API_BASE_URL}/schedules/${scheduleId}`, schedule, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

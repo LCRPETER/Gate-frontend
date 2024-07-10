@@ -2,14 +2,37 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DeleteCourseModal from "./DeleteCourseModal";
 import { getAllCourses } from "../../../service/CourseService";
+import UpdateCourse from "./UpdateCourse";
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [currentView, setCurrentView] = useState("courses");
 
   const coursesPerPage = 3;
+
+  const handleViewChange = (view, courseId = null) => {
+    setSelectedCourse(courseId);
+    setCurrentView(view);
+  };
+
+  const renderView = () => {
+    switch (currentView) {
+      case "courses":
+        return renderCourseList();
+      case "update-course":
+        return (
+          <UpdateCourse
+            handleViewChange={handleViewChange}
+            courseId={selectedCourse}
+          />
+        );
+      default:
+        return renderParentList();
+    }
+  };
 
   useEffect(() => {
     getAllCourses()
@@ -68,7 +91,7 @@ const CourseList = () => {
   const startIndex = currentPage * coursesPerPage;
   const currentCourses = courses.slice(startIndex, startIndex + coursesPerPage);
 
-  return (
+  const renderCourseList = () => (
     <>
       <div className="p-2 ps-4">
         <i
@@ -110,6 +133,9 @@ const CourseList = () => {
                     <i
                       className="fa-solid fa-pen-to-square text-primary"
                       style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        handleViewChange("update-course", course.course_id)
+                      }
                     ></i>
                   </td>
                   <td className="text-center fs-3 text-danger">
@@ -153,6 +179,8 @@ const CourseList = () => {
       </div>
     </>
   );
+
+  return <>{renderView()}</>;
 };
 
 export default CourseList;

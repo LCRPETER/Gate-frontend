@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { getGroupId, updateGroup } from "../../../service/GroupsService";
+import { getCourseById, updateCourse } from "../../../service/CourseService";
 
-const UpdateGroup = ({ handleViewChange, groupId }) => {
+const UpdateCourse = ({ handleViewChange, courseId }) => {
   const [formData, setFormData] = useState({
-    nameGroup: "",
-    level: "",
-    schoolYear: "",
-    student: [],
-    taughtSubjects: [],
-    schedules: [],
+    dateCourse: "",
+    dayOfWeek: "",
+    startTime: "",
+    endTime: "",
+    subject: { nameSubject: "" },
+    schedules: { description: "", groupName: "" },
   });
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -16,25 +16,28 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    getGroupId(groupId)
+    getCourseById(courseId)
       .then((response) => {
-        const groupData = response.data;
+        const courseData = response.data;
         setFormData({
-          nameGroup: groupData.nameGroup,
-          level: groupData.level,
-          schoolYear: groupData.schoolYear,
-          student: [],
-          taughtSubjects: [],
-          schedules: [],
+          dateCourse: courseData.dateCourse,
+          dayOfWeek: courseData.dayOfWeek,
+          startTime: courseData.startTime,
+          endTime: courseData.endTime,
+          subject: { nameSubject: courseData.nameSubject },
+          schedules: {
+            description: courseData.schedule_description,
+            groupName: courseData.nameGroup,
+          },
         });
       })
       .catch((error) => {
         console.error(
-          "Erreur lors de la récupération des données du groupe",
+          "Erreur lors de la récupération des données du cours",
           error
         );
       });
-  }, [groupId]);
+  }, [courseId]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -44,26 +47,51 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
     }));
   };
 
+  const handleSubjectChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      subject: {
+        ...prevState.subject,
+        [name]: value,
+      },
+    }));
+  };
+
+  const handleScheduleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      schedules: {
+        ...prevState.schedules,
+        [name]: value,
+      },
+    }));
+  };
+
   const saveCourseForm = (e) => {
     e.preventDefault();
     setLoading(true);
 
-    const updatedGroup = {
-      nameGroup: formData.nameGroup,
-      level: formData.level,
-      schoolYear: formData.schoolYear,
-      student: [],
-      taughtSubjects: [],
-      schedules: [],
+    const updatedCourse = {
+      dateCourse: formData.dateCourse,
+      dayOfWeek: formData.dayOfWeek,
+      startTime: formData.startTime,
+      endTime: formData.endTime,
+      subject: { nameSubject: formData.subject.nameSubject },
+      schedules: {
+        description: formData.schedules.description,
+        groupName: formData.schedules.groupName,
+      },
     };
 
-    updateGroup(groupId, updatedGroup)
+    updateCourse(courseId, updatedCourse)
       .then((response) => {
-        setSuccessMessage("Groupe mis à jour avec succès.");
+        setSuccessMessage("Cours mis à jour avec succès.");
         setErrorMessage("");
       })
       .catch((error) => {
-        setErrorMessage("Erreur lors de la mise à jour du groupe.");
+        setErrorMessage("Erreur lors de la mise à jour du cours.");
         setSuccessMessage("");
       })
       .finally(() => {
@@ -76,13 +104,13 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
       <button
         className="bg-teal text-light fw-semibold rounded p-1 position-absolute start-1 ps-2 pe-2"
         style={{ marginTop: "20px", top: "-50px" }}
-        onClick={() => handleViewChange("groups")}
+        onClick={() => handleViewChange("courses")}
       >
         Retour
       </button>
       <div className="m-4 col-md-10 offset-md-3 m-auto">
         <h2 className="text-center card bg-secondary p-2 fs-3 text-light">
-          Modifier un groupe
+          Modifier un cours
         </h2>
         {successMessage && (
           <div
@@ -107,39 +135,44 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
                 <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
-                      type="text"
-                      placeholder="Nom du groupe"
-                      name="nameGroup"
-                      value={formData.nameGroup}
-                      onChange={handleInputChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  <div className="col form-group mb-2 fs-6">
-                    <input
-                      type="text"
-                      placeholder="Niveau"
-                      name="level"
-                      value={formData.level}
-                      onChange={handleInputChange}
-                      className="form-control"
-                      required
-                    />
-                  </div>
-                  <div className="col form-group mb-2 fs-6">
-                    <input
                       type="date"
-                      placeholder="Année scolaire"
-                      name="schoolYear"
-                      value={formData.schoolYear}
+                      placeholder="Date du cours"
+                      name="dateCourse"
+                      value={formData.dateCourse}
                       onChange={handleInputChange}
                       className="form-control"
                       required
                     />
                   </div>
-                </div>
-                <div className="row">
+                  <div className="col form-group mb-2 fs-6">
+                    <select
+                      name="dayOfWeek"
+                      value={formData.dayOfWeek}
+                      onChange={handleInputChange}
+                      className="form-select"
+                      required
+                    >
+                      <option value="">Sélectionner le jour</option>
+                      <option value="MONDAY">Lundi</option>
+                      <option value="TUESDAY">Mardi</option>
+                      <option value="WEDNESDAY">Mercredi</option>
+                      <option value="THURSDAY">Jeudi</option>
+                      <option value="FRIDAY">Vendredi</option>
+                      <option value="SATURDAY">Samedi</option>
+                      <option value="SUNDAY">Dimanche</option>
+                    </select>
+                  </div>
+                  <div className="col form-group mb-2 fs-6">
+                    <input
+                      type="time"
+                      placeholder="Heure de début"
+                      name="startTime"
+                      value={formData.startTime}
+                      onChange={handleInputChange}
+                      className="form-control"
+                      required
+                    />
+                  </div>
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="time"
@@ -151,6 +184,8 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
                       required
                     />
                   </div>
+                </div>
+                <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
@@ -203,4 +238,4 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
   );
 };
 
-export default UpdateGroup;
+export default UpdateCourse;

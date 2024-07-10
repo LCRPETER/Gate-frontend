@@ -3,6 +3,7 @@ import "tw-elements";
 import ScheduleList from "./ScheduleList";
 import AddSchedule from "./AddSchedule";
 import UpdateSchedule from "./UpdateSchedule";
+import GroupSchedule from "./GroupSchedule";
 
 const ScheduleManagement = () => {
   const [currentView, setCurrentView] = useState("schedule");
@@ -21,7 +22,7 @@ const ScheduleManagement = () => {
   const renderView = () => {
     switch (currentView) {
       case "schedule":
-        return <ScheduleList handleViewChange={handleViewChange} />;
+        return <GroupSchedule handleViewChange={handleViewChange} />;
       case "add-schedule":
         return <AddSchedule handleViewChange={handleViewChange} />;
       case "update-schedule":
@@ -32,7 +33,7 @@ const ScheduleManagement = () => {
           />
         );
       default:
-        return <ScheduleList handleViewChange={handleViewChange} />;
+        return <GroupSchedule handleViewChange={handleViewChange} />;
     }
   };
 

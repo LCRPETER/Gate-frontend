@@ -25,12 +25,12 @@ export const getAllStudents = () =>
   });
 
 export const getStudentById = (id) =>
-  axios.get(`${API_URL}/students/${id}`, {
+  axios.get(`${API_URL}/${id}`, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 
-export const updateStudent = (student) => {
-  return axios.put(API_URL, student, {
+export const updateStudent = (studentId, student) => {
+  return axios.put(`${API_URL}/${studentId}`, student, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

@@ -8,7 +8,11 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
     schoolYear: "",
     student: [],
     taughtSubjects: [],
-    schedules: [],
+    schedules: {
+      nameSubject: "",
+      description: "",
+      groupName: "",
+    },
   });
 
   const [successMessage, setSuccessMessage] = useState("");
@@ -23,9 +27,13 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
           nameGroup: groupData.nameGroup,
           level: groupData.level,
           schoolYear: groupData.schoolYear,
-          student: [],
-          taughtSubjects: [],
-          schedules: [],
+          student: groupData.student || [],
+          taughtSubjects: groupData.taughtSubjects || [],
+          schedules: {
+            nameSubject: groupData.schedules?.nameSubject || "",
+            description: groupData.schedules?.description || "",
+            groupName: groupData.schedules?.groupName || "",
+          },
         });
       })
       .catch((error) => {
@@ -44,6 +52,17 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
     }));
   };
 
+  const handleScheduleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      schedules: {
+        ...prevState.schedules,
+        [name]: value,
+      },
+    }));
+  };
+
   const saveCourseForm = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -52,9 +71,9 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
       nameGroup: formData.nameGroup,
       level: formData.level,
       schoolYear: formData.schoolYear,
-      student: [],
-      taughtSubjects: [],
-      schedules: [],
+      student: formData.student, // Keep as non-modifiable
+      taughtSubjects: formData.taughtSubjects, // Keep as non-modifiable
+      schedules: formData.schedules, // Keep as non-modifiable
     };
 
     updateGroup(groupId, updatedGroup)
@@ -115,8 +134,6 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
                       className="form-control"
                       required
                     />
-                  </div>
-                  <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
                       placeholder="Niveau"
@@ -138,8 +155,6 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
                       required
                     />
                   </div>
-                </div>
-                <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="time"
@@ -151,13 +166,15 @@ const UpdateGroup = ({ handleViewChange, groupId }) => {
                       required
                     />
                   </div>
+                </div>
+                <div className="row">
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="text"
                       placeholder="Nom de la matière"
                       name="nameSubject"
-                      value={formData.subject.nameSubject}
-                      onChange={handleSubjectChange}
+                      value={formData.schedules.nameSubject}
+                      onChange={handleScheduleChange}
                       className="form-control"
                       required
                     />

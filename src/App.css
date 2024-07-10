@@ -82,6 +82,7 @@ body {
 .hover-box-schedule:hover,
 .active-student {
   background: #43766c;
+  color: #fff;
   transition: all 0.3s ease;
 }
 

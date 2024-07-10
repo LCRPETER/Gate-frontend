@@ -13,9 +13,10 @@ const AuthService = {
       });
       if (response.data.bearer) {
         const token = response.data.bearer;
-        console.log(token);
         localStorage.setItem("token", token.replace(/[{}]/g, ""));
         localStorage.setItem("role", response.data.role);
+        localStorage.setItem("matricule", response.data.matricule);
+        alert(localStorage.getItem("matricule"));
       }
 
       return response.data;
@@ -33,12 +34,13 @@ const AuthService = {
         {},
         {
           headers: {
-            Authorization: localStorage.getItem("token"),
+            Authorization: `bearer=${token}`,
           },
         }
       );
       localStorage.removeItem("token");
-      localStorage.removeItem("role"); // Supprimer le rôle de l'utilisateur
+      localStorage.removeItem("role");
+      localStorage.removeItem("matricule");
     } catch (error) {
       console.error("Erreur de déconnexion:", error);
     }

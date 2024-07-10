@@ -9,25 +9,31 @@ export const recordAttendance = (courseAttendance) => {
 };
 
 export const getAttendanceByCourse = (courseId) => {
-  return axios.get(`${API_BASE_URL}/attendance/course/${courseId}`, {
+  return axios.get(`${API_URL}/attendance/course/${courseId}`, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };
 
 export const getAttendanceByStudent = (studentId) => {
-  return axios.get(`${API_BASE_URL}/attendance/student/${studentId}`, {
+  return axios.get(`${API_URL}/attendance/student/${studentId}`, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };
 
 export const updateAttendance = (courseAttendance) => {
-  return axios.put(`${API_BASE_URL}/attendance`, courseAttendance, {
+  return axios.put(`${API_URL}/attendance`, courseAttendance, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };
 
 export const deleteAbsentById = (id) => {
-  return axios.delete(`${API_BASE_URL}/attendance/delete/${id}`, {
+  return axios.delete(`${API_URL}/attendance/delete/${id}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+};
+
+export const getAllStudents = () => {
+  return axios.get(`${API_URL}/studentsList`, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

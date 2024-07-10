@@ -39,8 +39,8 @@ export const getParentById = (id) => {
   });
 };
 
-export const updateParent = (id) => {
-  return axios.put(`${API_URL}/${id}`, {
+export const updateParent = (parentId, parent) => {
+  return axios.put(`${API_URL}/${parentId}`, parent, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

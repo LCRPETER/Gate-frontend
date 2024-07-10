@@ -81,6 +81,7 @@ const AddTeacher = ({ handleViewChange }) => {
   const saveTeacherForm = (e) => {
     e.preventDefault();
     setLoading(true);
+
     createTeacher(formData)
       .then((response) => {
         if (photo) {

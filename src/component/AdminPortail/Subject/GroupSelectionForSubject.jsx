@@ -3,7 +3,7 @@ import { getAllGroupes } from "../../../service/GroupsService";
 import StudentListForPayment from "./StudentListForPayment";
 import "../../../App.css";
 
-const GroupSelectionForPayment = () => {
+const GroupSelectionForSubject = () => {
   const [groups, setGroups] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [selectedYear, setSelectedYear] = useState("");
@@ -172,4 +172,4 @@ const GroupSelectionForPayment = () => {
   return <>{renderView()}</>;
 };
 
-export default GroupSelectionForPayment;
+export default GroupSelectionForSubject;

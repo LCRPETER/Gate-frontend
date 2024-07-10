@@ -8,8 +8,8 @@ export const getAllSubjects = () => {
   });
 };
 
-export const updateSubject = (subject) => {
-  return axios.put(`${API_URL}`, id, subject, {
+export const updateSubject = (subjectId, subject) => {
+  return axios.put(`${API_URL}/${subjectId}`, subject, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

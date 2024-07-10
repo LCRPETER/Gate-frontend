@@ -1,8 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/student/";
+const API_URL = "http://localhost:8080/api/student";
 
-export const getPaymentById = (studentId) =>
-  axios.get(`${API_URL}/payments/student/${studentId}`, {
+export const getPaymentByStudentMatricule = (studentMatricule) =>
+  axios.get(`${API_URL}/${studentMatricule}/payment`, {
     headers: { Authorization: localStorage.getItem("token") },
   });

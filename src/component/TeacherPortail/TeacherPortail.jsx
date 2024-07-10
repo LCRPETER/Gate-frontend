@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import DashboardTeacher from "./DashboardTeacher";
 import Logout from "../Logout/Logout";
+import GroupByTeacherSelect from "./GroupByTeacherSelect";
+import AttendanceManagement from "./AttendenceMagement";
+import Attendance from "./Attendance";
 
-const TeacherPortail = () => {
+const TeacherPortail = ({ id }) => {
   const [currentView, setCurrentView] = useState("dashboard");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-
   const handleViewChange = (view) => {
     setCurrentView(view);
   };
@@ -32,15 +34,20 @@ const TeacherPortail = () => {
           />
         );
       case "schedules":
-        return <div>schedules</div>;
+        return (
+          <GroupByTeacherSelect
+            handleViewChange={handleViewChange}
+            teacherId={id}
+          />
+        ); // Add this line
       case "courses":
-        return <div>courses</div>;
+        return <Attendance />;
       case "evaluations":
         return <div>evaluations</div>;
       case "grades":
         return <div>grades</div>;
       case "attendance":
-        return <div>attendance</div>;
+        return <AttendanceManagement />;
       case "logout":
         return <Logout />;
       default:
@@ -240,30 +247,52 @@ const TeacherPortail = () => {
         </div>
       </div>
       <div className="box-right p-3 position-relative rounded-0 d-flex align-items-center justify-content-between">
-        <div className="fs-2 fw-semibold">Bienvenue dans votre Portail</div>
-        <div className="p-2 fw-semibold">
-          <div className="" style={{ cursor: "pointer" }}>
-            <div className="text-center ">
-              <i
-                className="fa-solid fa-arrow-right-from-bracket fs-4 text-teal"
-                onClick={handleLogoutClick}
-              ></i>
+        <div className="text-uppercase fw-bold fs-5 text-dark-blue">
+          Accueil
+        </div>
+        <div className="icon-logout">
+          <i
+            className="fa-solid fa-arrow-right-from-bracket fs-4"
+            onClick={handleLogoutClick}
+          ></i>
+        </div>
+        {showLogoutModal && (
+          <div className="modal fade show d-block" tabIndex="-1">
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  <h5 className="modal-title">Déconnexion</h5>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    onClick={closeLogoutModal}
+                  ></button>
+                </div>
+                <div className="modal-body">
+                  <p>Voulez-vous vraiment vous déconnecter ?</p>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={closeLogoutModal}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={() => handleViewChange("logout")}
+                  >
+                    Se déconnecter
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <span
-          className="position-absolute bg-secondary shadow-sm"
-          style={{
-            width: "96%",
-            height: "3.5px",
-            left: "50%",
-            top: "100%",
-            transform: "translate(-50%)",
-          }}
-        ></span>
+        )}
       </div>
-      <div className="box-right-center rounded-0">{renderView()}</div>
-      {showLogoutModal && <Logout onClose={closeLogoutModal} />}
+      <div className="box-content-teacher">{renderView()}</div>
     </div>
   );
 };

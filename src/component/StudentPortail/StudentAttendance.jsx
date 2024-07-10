@@ -1,22 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { getStudentGrades } from "../../service/Student-portail/StudentGradesService";
+import { getAttendanceByStudentMatricule } from "../../service/Student-portail/StudentAttendance";
 
-const StudentGrades = ({ studentMatricule }) => {
-  const [grades, setGrades] = useState([]);
+const StudentAttendance = ({ studentMatricule }) => {
+  const [attendances, setAttendances] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getStudentGrades(studentMatricule);
+        const response = await getAttendanceByStudentMatricule(
+          studentMatricule
+        );
 
-        console.log("API Response:", response);
-        if (response) {
-          setGrades(response);
-        } else {
-          setGrades([]);
-        }
+        setAttendances(response.data);
 
         setLoading(false);
       } catch (error) {
@@ -35,7 +32,7 @@ const StudentGrades = ({ studentMatricule }) => {
   }
 
   if (error) {
-    return <div>Error fetching grades: {error.message}</div>;
+    return <div>Error fetching payments: {error.message}</div>;
   }
 
   return (
@@ -47,19 +44,23 @@ const StudentGrades = ({ studentMatricule }) => {
         <thead>
           <tr className="text-center border-secondary border-start-0 border-end-0 h-12 fw-bolder">
             <th>Matière</th>
-            <th>Evaluation</th>
-            <th>Note</th>
+            <th>Date</th>
+            <th>Heure</th>
           </tr>
         </thead>
         <tbody>
-          {grades.map((grade) => (
+          {attendances.map((attendance) => (
             <tr
-              key={grade.grade_id}
+              key={attendance.attendance_id}
               className="border-secondary border-start-0 border-end-0 h-12 text-center"
             >
-              <td>{grade.nameSubject}</td>
-              <td>{grade.assessment}</td>
-              <td>{grade.note}</td>
+              <td>{attendance.nameSubject}</td>
+              <td>{attendance.dateCourse}</td>
+              <td>
+                {attendance.startTime}
+                {" - "}
+                {attendance.endTime}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -68,4 +69,4 @@ const StudentGrades = ({ studentMatricule }) => {
   );
 };
 
-export default StudentGrades;
+export default StudentAttendance;

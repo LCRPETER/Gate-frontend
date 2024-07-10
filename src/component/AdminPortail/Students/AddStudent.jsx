@@ -9,7 +9,7 @@ const AddStudent = ({ handleViewChange }) => {
     gender: "",
     birth_date: "",
     birthPlace: "",
-    address: { city: "", street: "", zipCod: "" },
+    address: { city: "", street: "", zipCode: "" },
     infoContacts: { email: "", phoneNumber: "" },
     role: { name: "STUDENT" },
     password: "",
@@ -97,7 +97,7 @@ const AddStudent = ({ handleViewChange }) => {
                 gender: "",
                 birth_date: "",
                 birthPlace: "",
-                address: { city: "", street: "", zipCod: "" },
+                address: { city: "", street: "", zipCode: "" },
                 infoContacts: { email: "", phoneNumber: "" },
                 role: { name: "STUDENT" },
                 password: "",
@@ -270,8 +270,8 @@ const AddStudent = ({ handleViewChange }) => {
                     <input
                       type="text"
                       placeholder="Code postal"
-                      name="zipCod"
-                      value={formData.address.zipCod}
+                      name="zipCode"
+                      value={formData.address.zipCode}
                       onChange={handleAddressChange}
                       className="form-control"
                       required

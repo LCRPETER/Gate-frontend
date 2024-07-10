@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import AuthService from "../../service/AuthService";
+import { getStudentByMatricule } from "../../service/Student-portail/StudentPersonalInfo";
 
 const Auth = () => {
   const [login, setLogin] = useState("");
@@ -14,7 +15,6 @@ const Auth = () => {
       const data = await AuthService.login(login, password);
       const role = data.role;
 
-      // Redirect based on role
       switch (role) {
         case "ROLE_ADMIN":
           navigate("/api/admin");
@@ -32,8 +32,8 @@ const Auth = () => {
           alert("Role not recognized");
       }
     } catch (error) {
-      console.error("Login failed", error);
-      alert("Login failed");
+      console.error("Login ou Mot de passe incorrect", error);
+      alert("Login ou Mot de passe incorrect");
     }
   };
 

@@ -8,8 +8,20 @@ export const getAllCourses = () => {
   });
 };
 
+export const getCourseById = (courseId) => {
+  return axios.get(`${API_URL}/${courseId}`, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+};
+
 export const createCourse = (course) => {
   return axios.post(API_URL, course, {
+    headers: { Authorization: localStorage.getItem("token") },
+  });
+};
+
+export const updateCourse = (courseId, course) => {
+  return axios.put(`${API_URL}/${courseId}`, course, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

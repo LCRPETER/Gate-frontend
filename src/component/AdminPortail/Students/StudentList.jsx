@@ -5,6 +5,7 @@ import {
 } from "../../../service/StudentService";
 import { Link } from "react-router-dom";
 import DeleteStudentModal from "./DeleteStudentModal";
+import UpdateStudent from "./UpdateStudent.jsx";
 
 const StudentList = () => {
   const [students, setStudents] = useState([]);
@@ -13,6 +14,29 @@ const StudentList = () => {
   const [currentPage, setCurrentPage] = useState(0);
 
   const studentsPerPage = 3;
+
+  const [currentView, setCurrentView] = useState("students");
+
+  const handleViewChange = (view, studentId = null) => {
+    setSelectedStudent(studentId);
+    setCurrentView(view);
+  };
+
+  const renderView = () => {
+    switch (currentView) {
+      case "students":
+        return renderStudentList();
+      case "update-student":
+        return (
+          <UpdateStudent
+            handleViewChange={handleViewChange}
+            studentId={selectedStudent}
+          />
+        );
+      default:
+        return renderStudentList();
+    }
+  };
 
   useEffect(() => {
     getAllStudents()
@@ -72,7 +96,7 @@ const StudentList = () => {
     startIndex + studentsPerPage
   );
 
-  return (
+  const renderStudentList = () => (
     <>
       <div className="p-2 ps-4">
         <i
@@ -116,6 +140,9 @@ const StudentList = () => {
                     <i
                       className="fa-solid fa-pen-to-square text-primary"
                       style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        handleViewChange("update-student", student.user_id)
+                      }
                     ></i>
                   </td>
                   <td className="text-center fs-3 text-danger">
@@ -159,6 +186,8 @@ const StudentList = () => {
       </div>
     </>
   );
+
+  return <>{renderView()}</>;
 };
 
 export default StudentList;

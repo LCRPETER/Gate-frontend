@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { createPayment } from "../../../service/Payment";
 
-const AddPayment = () => {
-  const { studentId } = useParams();
+const AddPayment = ({ studentId, handleViewChange }) => {
   const [paymentMethod, setPaymentMethod] = useState("");
   const [amountPay, setAmountPay] = useState("");
   const [paymentDate, setPaymentDate] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -21,13 +18,8 @@ const AddPayment = () => {
   const savePaymentForm = (e) => {
     e.preventDefault();
 
-    if (!studentId) {
-      setErrorMessage("Erreur: L'ID de l'étudiant est manquant.");
-      return;
-    }
-
     const payment = {
-      student: { id: studentId },
+      studentId,
       paymentMethod,
       amountPay,
       paymentDate,
@@ -38,7 +30,6 @@ const AddPayment = () => {
         setSuccessMessage("Paiement ajouté avec succès !");
         setErrorMessage("");
         console.log(response.data);
-        navigate(`/students/${studentId}`);
       })
       .catch((error) => {
         setSuccessMessage("");
@@ -56,7 +47,7 @@ const AddPayment = () => {
       <button
         className="bg-teal text-light fw-semibold rounded p-1 position-absolute start-1 ps-2 pe-2"
         style={{ marginTop: "20px", top: "-50px" }}
-        onClick={() => navigate(`/groups`)}
+        onClick={() => handleViewChange("students")}
       >
         Retour
       </button>
@@ -89,11 +80,11 @@ const AddPayment = () => {
                     <input
                       type="text"
                       className="form-control"
-                      name="paymentMethod"
-                      value={paymentMethod}
-                      onChange={handleInputChange}
+                      name="studentId"
+                      value={studentId}
+                      disabled
                       required
-                      placeholder="Mode paiement"
+                      placeholder="ID Utilisateur"
                     />
                   </div>
                   <div className="col form-group mb-2 fs-6">
@@ -109,6 +100,17 @@ const AddPayment = () => {
                   </div>
                 </div>
                 <div className="row">
+                  <div className="col form-group mb-2 fs-6">
+                    <input
+                      type="text"
+                      className="form-control"
+                      name="paymentMethod"
+                      value={paymentMethod}
+                      onChange={handleInputChange}
+                      required
+                      placeholder="Mode de paiement"
+                    />
+                  </div>
                   <div className="col form-group mb-2 fs-6">
                     <input
                       type="date"

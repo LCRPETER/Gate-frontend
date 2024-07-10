@@ -1,7 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import StudentNotes from "./StudentNotes";
-import StudentAssessment from "./StudentAssessment";
+import StudentGrades from "./StudentGrades";
 
 const DashboardStudent = ({ handleViewChange, currentView }) => {
   const renderView = () => {
@@ -15,11 +14,9 @@ const DashboardStudent = ({ handleViewChange, currentView }) => {
       case "schedule":
         return <div></div>;
       case "grades":
-        return <StudentNotes />;
-      case "evaluations":
-        return <StudentAssessment />;
-      case "absenceHistory":
-        return <StudentAssiduite />;
+        return <StudentGrades />;
+      case "attendance":
+        return <StudentAttendance />;
       case "paymentHistory":
         return <div></div>;
       default:
@@ -109,7 +106,7 @@ const DashboardStudent = ({ handleViewChange, currentView }) => {
                 Historique des Absences
               </div>
               <div className="bg-Very-light-orange h-75 d-flex align-items-center justify-content-center">
-                <Link to="#" onClick={() => handleViewChange("absenceHistory")}>
+                <Link to="#" onClick={() => handleViewChange("attendance")}>
                   <i
                     className="fa-solid fa-calendar-times fs-1 bg-brown-beige"
                     style={{ cursor: "pointer" }}

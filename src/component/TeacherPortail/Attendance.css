@@ -1,0 +1,65 @@
+.assiduite {
+  padding: 20px;
+}
+
+.header-attendance {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.select-all {
+  display: flex;
+  align-items: center;
+}
+
+.select-all label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.select-all input {
+  margin-left: 10px;
+}
+
+.students-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.student-card {
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+
+.student-card img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.attendance-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.attendance-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  margin: 0 5px;
+}
+
+.attendance-btn.selected {
+  border: 2px solid #000;
+  border-radius: 50%;
+}

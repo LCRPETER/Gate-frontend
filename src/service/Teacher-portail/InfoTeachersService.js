@@ -7,13 +7,3 @@ export const getTeacherById = (id) => {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };
-
-export const searchTeacherByFirstNameAndLastName = (firstName, lastName) => {
-  return axios.get(`${API_BASE_URL}/searchByFirstNameAndLastName`, {
-    headers: { Authorization: localStorage.getItem("token") },
-    params: {
-      firstName: firstName,
-      lastName: lastName,
-    },
-  });
-};

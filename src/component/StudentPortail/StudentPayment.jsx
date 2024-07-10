@@ -1,22 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { getStudentGrades } from "../../service/Student-portail/StudentGradesService";
+import { getPaymentByStudentMatricule } from "../../service/Student-portail/StudentPayment";
 
-const StudentGrades = ({ studentMatricule }) => {
-  const [grades, setGrades] = useState([]);
+const StudentPayment = ({ studentMatricule }) => {
+  const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getStudentGrades(studentMatricule);
+        const response = await getPaymentByStudentMatricule(studentMatricule);
 
-        console.log("API Response:", response);
-        if (response) {
-          setGrades(response);
-        } else {
-          setGrades([]);
-        }
+        setPayments(response.data);
 
         setLoading(false);
       } catch (error) {
@@ -35,7 +30,7 @@ const StudentGrades = ({ studentMatricule }) => {
   }
 
   if (error) {
-    return <div>Error fetching grades: {error.message}</div>;
+    return <div>Error fetching payments: {error.message}</div>;
   }
 
   return (
@@ -46,20 +41,20 @@ const StudentGrades = ({ studentMatricule }) => {
       >
         <thead>
           <tr className="text-center border-secondary border-start-0 border-end-0 h-12 fw-bolder">
-            <th>Matière</th>
-            <th>Evaluation</th>
-            <th>Note</th>
+            <th>Mode de paiement</th>
+            <th>Montant de paiement</th>
+            <th>Date de paiement</th>
           </tr>
         </thead>
         <tbody>
-          {grades.map((grade) => (
+          {payments.map((payment) => (
             <tr
-              key={grade.grade_id}
+              key={payment.payment_id}
               className="border-secondary border-start-0 border-end-0 h-12 text-center"
             >
-              <td>{grade.nameSubject}</td>
-              <td>{grade.assessment}</td>
-              <td>{grade.note}</td>
+              <td>{payment.paymentMethod}</td>
+              <td>{payment.amountPay}</td>
+              <td>{payment.paymentDate}</td>
             </tr>
           ))}
         </tbody>
@@ -68,4 +63,4 @@ const StudentGrades = ({ studentMatricule }) => {
   );
 };
 
-export default StudentGrades;
+export default StudentPayment;

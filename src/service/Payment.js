@@ -14,8 +14,8 @@ export const createPayment = (payment) => {
   });
 };
 
-export const updatePaymentById = (id, updatedPayment) => {
-  return axios.put(`${API_URL}/${id}`, updatedPayment, {
+export const updatePayment = (paymentId, payment) => {
+  return axios.put(`${API_URL}/${paymentId}`, payment, {
     headers: { Authorization: localStorage.getItem("token") },
   });
 };

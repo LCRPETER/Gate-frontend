@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import DashboardStudent from "../StudentPortail/DashboardStudent";
 import Logout from "../Logout/Logout";
 import StudentGrades from "./StudentGrades";
-import StudentAssiduite from "./StudentAssiduite";
-import StudentAssessment from "./StudentAssessment";
+import StudentInfoPersonal from "./StudentInfoPersonal";
+import StudentPayment from "./StudentPayment";
+import StudentAttendance from "./StudentAttendance";
 
-const StudentPortail = () => {
+const StudentPortail = ({ studentMatricule }) => {
   const [currentView, setCurrentView] = useState("dashboard");
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
@@ -35,19 +36,36 @@ const StudentPortail = () => {
           />
         );
       case "personalInfo":
-        return <div></div>;
+        return (
+          <StudentInfoPersonal
+            handleViewChange={handleViewChange}
+            studentMatricule={studentMatricule}
+          />
+        );
+
       case "grades":
-        return <StudentGrades />;
+        return (
+          <StudentGrades
+            handleViewChange={handleViewChange}
+            studentMatricule={studentMatricule}
+          />
+        );
       case "schedules":
-        return <StudentAssessment />;
-      case "absences":
         return <div></div>;
+      case "attendance":
+        return (
+          <StudentAttendance
+            handleViewChange={handleViewChange}
+            studentMatricule={studentMatricule}
+          />
+        );
       case "payments":
-        return <div></div>;
-      case "evaluations":
-        return <div></div>;
-      case "absenceHistory":
-        return <StudentAssiduite />;
+        return (
+          <StudentPayment
+            handleViewChange={handleViewChange}
+            studentMatricule={studentMatricule}
+          />
+        );
       case "paymentHistory":
         return <div></div>;
       case "logout":
@@ -203,36 +221,11 @@ const StudentPortail = () => {
           <div
             className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("evaluations")}
+            onClick={() => handleViewChange("attendance")}
           >
             <div
               className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
-                "evaluations"
-              )}`}
-              style={{ cursor: "pointer" }}
-            >
-              <i className="fa-solid fa-clipboard-check fs-5"></i> Evaluations
-            </div>
-            <span
-              className="position-absolute shadow-sm"
-              style={{
-                width: "100%",
-                height: "1px",
-                left: "50%",
-                top: "100%",
-                transform: "translate(-50%)",
-                backgroundColor: "rgba(148, 147, 147, 0.568)",
-              }}
-            ></span>
-          </div>
-          <div
-            className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
-            style={{ height: "45px" }}
-            onClick={() => handleViewChange("absenceHistory")}
-          >
-            <div
-              className={`w-100 p-1 rounded-1 hover-box d-flex align-items-center m-auto ${isActive(
-                "absenceHistory"
+                "attendance"
               )}`}
               style={{ cursor: "pointer" }}
             >
@@ -254,11 +247,11 @@ const StudentPortail = () => {
           <div
             className="mb-2 text-light position-relative ps-3 pe-4 d-flex align-items-center "
             style={{ height: "45px" }}
-            onClick={() => handleViewChange("paymentHistory")}
+            onClick={() => handleViewChange("payments")}
           >
             <div
               className={`w-100 p-1 rounded-1 hover-box m-auto ${isActive(
-                "paymentHistory"
+                "payments"
               )}`}
               style={{ cursor: "pointer" }}
             >

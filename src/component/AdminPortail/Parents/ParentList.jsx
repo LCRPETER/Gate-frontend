@@ -1,23 +1,42 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import DeleteParentModal from "./DeleteParentModal";
 import {
   deleteParentById,
   getAllParents,
 } from "../../../service/ParentService";
+import { Link } from "react-router-dom";
+import DeleteParentModal from "./DeleteParentModal";
+import UpdateParent from "./UpdateParent.jsx";
 
 const ParentList = () => {
   const [parents, setParents] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedParent, setSelectedParent] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [showSearch, setShowSearch] = useState(false);
-
-  const handleSearchToggle = () => {
-    setShowSearch(!showSearch);
-  };
 
   const parentsPerPage = 3;
+
+  const [currentView, setCurrentView] = useState("parents");
+
+  const handleViewChange = (view, parentId = null) => {
+    setSelectedParent(parentId);
+    setCurrentView(view);
+  };
+
+  const renderView = () => {
+    switch (currentView) {
+      case "parents":
+        return renderParentList();
+      case "update-parent":
+        return (
+          <UpdateParent
+            handleViewChange={handleViewChange}
+            parentId={selectedParent}
+          />
+        );
+      default:
+        return renderParentList();
+    }
+  };
 
   useEffect(() => {
     getAllParents()
@@ -74,7 +93,7 @@ const ParentList = () => {
   const startIndex = currentPage * parentsPerPage;
   const currentParents = parents.slice(startIndex, startIndex + parentsPerPage);
 
-  return (
+  const renderParentList = () => (
     <>
       <div className="p-2 ps-4">
         <i
@@ -110,10 +129,14 @@ const ParentList = () => {
                   </td>
                   <td>{parent.lastName}</td>
                   <td>{parent.firstName}</td>
+
                   <td className="text-center fs-3">
                     <i
                       className="fa-solid fa-pen-to-square text-primary"
                       style={{ cursor: "pointer" }}
+                      onClick={() =>
+                        handleViewChange("update-parent", parent.user_id)
+                      }
                     ></i>
                   </td>
                   <td className="text-center fs-3 text-danger">
@@ -157,6 +180,8 @@ const ParentList = () => {
       </div>
     </>
   );
+
+  return <>{renderView()}</>;
 };
 
 export default ParentList;
